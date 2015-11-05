@@ -1,0 +1,199 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   '--save',
+1 verbose cli   'react-dom' ]
+2 info using npm@2.11.3
+3 info using node@v0.12.7
+4 verbose install initial load of C:\Users\atodor\Desktop\Training\Task Manager\client\package.json
+5 warn package.json TaskManager@1.0.0 No repository field.
+6 warn package.json TaskManager@1.0.0 No README data
+7 verbose installManyTop reading scoped package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\bootstrap\package.json
+8 verbose installManyTop reading scoped package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\browserify\package.json
+9 verbose installManyTop reading scoped package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\flux\package.json
+10 verbose installManyTop reading scoped package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\gulp\package.json
+11 verbose installManyTop reading scoped package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\gulp-concat\package.json
+12 verbose installManyTop reading scoped package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\gulp-connect\package.json
+13 verbose installManyTop reading scoped package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\gulp-eslint\package.json
+14 verbose installManyTop reading scoped package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\gulp-open\package.json
+15 verbose installManyTop reading scoped package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\gulp-sass\package.json
+16 verbose installManyTop reading scoped package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\react\package.json
+17 verbose installManyTop reading scoped package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\react-router\package.json
+18 verbose installManyTop reading scoped package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\reactify\package.json
+19 verbose installManyTop reading scoped package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\vinyl-source-stream\package.json
+20 verbose readDependencies loading dependencies from C:\Users\atodor\Desktop\Training\Task Manager\client\package.json
+21 silly cache add args [ 'react-dom', null ]
+22 verbose cache add spec react-dom
+23 silly cache add parsed spec { raw: 'react-dom',
+23 silly cache add   scope: null,
+23 silly cache add   name: 'react-dom',
+23 silly cache add   rawSpec: '',
+23 silly cache add   spec: '*',
+23 silly cache add   type: 'range' }
+24 silly addNamed react-dom@*
+25 verbose addNamed "*" is a valid semver range for react-dom
+26 silly addNameRange { name: 'react-dom', range: '*', hasData: false }
+27 silly mapToRegistry name react-dom
+28 silly mapToRegistry using default registry
+29 silly mapToRegistry registry http://spxko7.cgm.ag/nexus2/content/groups/npm/
+30 silly mapToRegistry uri http://spxko7.cgm.ag/nexus2/content/groups/npm/react-dom
+31 verbose addNameRange registry:http://spxko7.cgm.ag/nexus2/content/groups/npm/react-dom not in flight; fetching
+32 verbose request uri http://spxko7.cgm.ag/nexus2/content/groups/npm/react-dom
+33 verbose request no auth needed
+34 info attempt registry request try #1 at 13:56:50
+35 verbose request id 83bb051dadd0f361
+36 http request GET http://spxko7.cgm.ag/nexus2/content/groups/npm/react-dom
+37 http 200 http://spxko7.cgm.ag/nexus2/content/groups/npm/react-dom
+38 silly get cb [ 200,
+38 silly get   { date: 'Thu, 05 Nov 2015 11:56:50 GMT',
+38 silly get     server: 'Nexus/2.11.3-01',
+38 silly get     'x-frame-options': 'SAMEORIGIN',
+38 silly get     'x-content-type-options': 'nosniff',
+38 silly get     'accept-ranges': 'bytes',
+38 silly get     'content-type': 'application/json',
+38 silly get     'last-modified': 'Thu, 05 Nov 2015 11:56:50 GMT',
+38 silly get     'content-length': '10389',
+38 silly get     connection: 'close' } ]
+39 verbose get saving react-dom to C:\Users\atodor\AppData\Roaming\npm-cache\spxko7.cgm.ag\nexus2\content\groups\npm\react-dom\.cache.json
+40 silly addNameRange number 2 { name: 'react-dom', range: '*', hasData: true }
+41 silly addNameRange versions [ 'react-dom',
+41 silly addNameRange   [ '0.1.0',
+41 silly addNameRange     '0.14.0-beta1',
+41 silly addNameRange     '0.14.0-beta2',
+41 silly addNameRange     '0.14.0-beta3',
+41 silly addNameRange     '0.14.0-rc1',
+41 silly addNameRange     '0.14.0',
+41 silly addNameRange     '0.14.1',
+41 silly addNameRange     '0.14.2' ] ]
+42 silly addNamed react-dom@0.14.2
+43 verbose addNamed "0.14.2" is a plain semver version for react-dom
+44 silly mapToRegistry name react-dom
+45 silly mapToRegistry using default registry
+46 silly mapToRegistry registry http://spxko7.cgm.ag/nexus2/content/groups/npm/
+47 silly mapToRegistry uri http://spxko7.cgm.ag/nexus2/content/groups/npm/react-dom
+48 verbose addRemoteTarball http://spxko7.cgm.ag/nexus2/content/groups/npm/react-dom/-/react-dom-0.14.2.tgz not in flight; adding
+49 verbose addRemoteTarball [ 'http://spxko7.cgm.ag/nexus2/content/groups/npm/react-dom/-/react-dom-0.14.2.tgz',
+49 verbose addRemoteTarball   'ba979850dca2513f99cf9fb3fb574ad9de3dab84' ]
+50 info retry fetch attempt 1 at 13:56:50
+51 info attempt registry request try #1 at 13:56:50
+52 http fetch GET http://spxko7.cgm.ag/nexus2/content/groups/npm/react-dom/-/react-dom-0.14.2.tgz
+53 http fetch 200 http://spxko7.cgm.ag/nexus2/content/groups/npm/react-dom/-/react-dom-0.14.2.tgz
+54 silly fetchAndShaCheck shasum ba979850dca2513f99cf9fb3fb574ad9de3dab84
+55 verbose addTmpTarball C:\Users\atodor\AppData\Local\Temp\npm-9608-a48a3367\spxko7.cgm.ag\nexus2\content\groups\npm\react-dom\-\react-dom-0.14.2.tgz not in flight; adding
+56 verbose addTmpTarball already have metadata; skipping unpack for react-dom@0.14.2
+57 silly cache afterAdd react-dom@0.14.2
+58 verbose afterAdd C:\Users\atodor\AppData\Roaming\npm-cache\react-dom\0.14.2\package\package.json not in flight; writing
+59 verbose afterAdd C:\Users\atodor\AppData\Roaming\npm-cache\react-dom\0.14.2\package\package.json written
+60 silly install resolved [ { name: 'react-dom',
+60 silly install resolved     version: '0.14.2',
+60 silly install resolved     description: 'React package for working with the DOM.',
+60 silly install resolved     main: 'index.js',
+60 silly install resolved     repository:
+60 silly install resolved      { type: 'git',
+60 silly install resolved        url: 'git+https://github.com/facebook/react.git' },
+60 silly install resolved     keywords: [ 'react' ],
+60 silly install resolved     license: 'BSD-3-Clause',
+60 silly install resolved     bugs: { url: 'https://github.com/facebook/react/issues' },
+60 silly install resolved     homepage: 'https://github.com/facebook/react/tree/master/npm-react-dom',
+60 silly install resolved     peerDependencies: { react: '^0.14.2' },
+60 silly install resolved     scripts: { start: 'node server.js' },
+60 silly install resolved     _id: 'react-dom@0.14.2',
+60 silly install resolved     _shasum: 'ba979850dca2513f99cf9fb3fb574ad9de3dab84',
+60 silly install resolved     _resolved: 'http://spxko7.cgm.ag/nexus2/content/groups/npm/react-dom/-/react-dom-0.14.2.tgz',
+60 silly install resolved     _from: 'react-dom@*',
+60 silly install resolved     _npmVersion: '2.14.9',
+60 silly install resolved     _nodeVersion: '4.2.0',
+60 silly install resolved     _npmUser: { name: 'zpao', email: 'paul@oshannessy.com' },
+60 silly install resolved     maintainers: [ [Object], [Object] ],
+60 silly install resolved     dist:
+60 silly install resolved      { shasum: 'ba979850dca2513f99cf9fb3fb574ad9de3dab84',
+60 silly install resolved        tarball: 'http://spxko7.cgm.ag/nexus2/content/groups/npm/react-dom/-/react-dom-0.14.2.tgz' },
+60 silly install resolved     directories: {} } ]
+61 info install react-dom@0.14.2 into C:\Users\atodor\Desktop\Training\Task Manager\client
+62 info installOne react-dom@0.14.2
+63 verbose installOne of react-dom to C:\Users\atodor\Desktop\Training\Task Manager\client not in flight; installing
+64 verbose lock using C:\Users\atodor\AppData\Roaming\npm-cache\_locks\react-dom-9213727e484130a2.lock for C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\react-dom
+65 silly install write writing react-dom 0.14.2 to C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\react-dom
+66 verbose unbuild node_modules\react-dom
+67 silly gentlyRm C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\react-dom is being purged from base C:\Users\atodor\Desktop\Training\Task Manager\client
+68 verbose gentlyRm don't care about contents; nuking C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\react-dom
+69 verbose tar unpack C:\Users\atodor\AppData\Roaming\npm-cache\react-dom\0.14.2\package.tgz
+70 verbose tar unpacking to C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\react-dom
+71 silly gentlyRm C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\react-dom is being purged
+72 verbose gentlyRm don't care about contents; nuking C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\react-dom
+73 silly gunzTarPerm modes [ '777', '666' ]
+74 silly gunzTarPerm extractEntry package.json
+75 silly gunzTarPerm modified mode [ 'package.json', 420, 438 ]
+76 silly gunzTarPerm extractEntry README.md
+77 silly gunzTarPerm modified mode [ 'README.md', 420, 438 ]
+78 silly gunzTarPerm extractEntry index.js
+79 silly gunzTarPerm modified mode [ 'index.js', 420, 438 ]
+80 silly gunzTarPerm extractEntry server.js
+81 silly gunzTarPerm modified mode [ 'server.js', 420, 438 ]
+82 silly gunzTarPerm extractEntry dist/react-dom.js
+83 silly gunzTarPerm modified mode [ 'dist/react-dom.js', 420, 438 ]
+84 silly gunzTarPerm extractEntry dist/react-dom.min.js
+85 silly gunzTarPerm modified mode [ 'dist/react-dom.min.js', 420, 438 ]
+86 verbose write writing to C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\react-dom\package.json
+87 info preinstall react-dom@0.14.2
+88 verbose readDependencies loading dependencies from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\react-dom\package.json
+89 silly prepareForInstallMany adding react@^0.14.2 from react-dom peerDependencies
+90 warn peerDependencies The peer dependency react@^0.14.2 included from react-dom will no
+91 warn peerDependencies longer be automatically installed to fulfill the peerDependency
+92 warn peerDependencies in npm 3+. Your application will need to depend on it explicitly.
+93 verbose readDependencies loading dependencies from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\react-dom\package.json
+94 silly install resolved []
+95 verbose about to build C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\react-dom
+96 info build C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\react-dom
+97 info linkStuff react-dom@0.14.2
+98 silly linkStuff react-dom@0.14.2 has C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules as its parent node_modules
+99 verbose linkBins react-dom@0.14.2
+100 verbose linkMans react-dom@0.14.2
+101 verbose rebuildBundles react-dom@0.14.2
+102 info install react-dom@0.14.2
+103 info postinstall react-dom@0.14.2
+104 verbose readDependencies loading dependencies from C:\Users\atodor\Desktop\Training\Task Manager\client\package.json
+105 verbose targetResolver reading package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\bootstrap\package.json
+106 verbose targetResolver reading package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\browserify\package.json
+107 verbose targetResolver reading package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\flux\package.json
+108 verbose targetResolver reading package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\gulp\package.json
+109 verbose targetResolver reading package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\gulp-concat\package.json
+110 verbose targetResolver reading package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\gulp-connect\package.json
+111 verbose targetResolver reading package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\gulp-eslint\package.json
+112 verbose targetResolver reading package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\gulp-open\package.json
+113 verbose targetResolver reading package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\gulp-sass\package.json
+114 verbose targetResolver reading package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\react\package.json
+115 verbose targetResolver reading package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\react-dom\package.json
+116 verbose targetResolver reading package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\react-router\package.json
+117 verbose targetResolver reading package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\reactify\package.json
+118 verbose targetResolver reading package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\vinyl-source-stream\package.json
+119 verbose targetResolver reading package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\.bin\browserify\package.json
+120 verbose targetResolver reading package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\.bin\browserify.cmd\package.json
+121 verbose targetResolver reading package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\.bin\gulp\package.json
+122 verbose targetResolver reading package data from C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\.bin\gulp.cmd\package.json
+123 verbose already installed skipping react@^0.14.2 C:\Users\atodor\Desktop\Training\Task Manager\client
+124 silly install resolved []
+125 verbose unlock done using C:\Users\atodor\AppData\Roaming\npm-cache\_locks\react-dom-9213727e484130a2.lock for C:\Users\atodor\Desktop\Training\Task Manager\client\node_modules\react-dom
+126 verbose validateInstall loading C:\Users\atodor\Desktop\Training\Task Manager\client\package.json for validation
+127 verbose stack Error: The package react does not satisfy its siblings' peerDependencies requirements!
+127 verbose stack     at C:\Program Files\nodejs\node_modules\npm\lib\install.js:125:32
+127 verbose stack     at C:\Program Files\nodejs\node_modules\npm\lib\install.js:267:7
+127 verbose stack     at C:\Program Files\nodejs\node_modules\npm\node_modules\read-installed\read-installed.js:138:5
+127 verbose stack     at C:\Program Files\nodejs\node_modules\npm\node_modules\read-installed\read-installed.js:251:14
+127 verbose stack     at cb (C:\Program Files\nodejs\node_modules\npm\node_modules\slide\lib\async-map.js:47:24)
+127 verbose stack     at C:\Program Files\nodejs\node_modules\npm\node_modules\read-installed\read-installed.js:251:14
+127 verbose stack     at cb (C:\Program Files\nodejs\node_modules\npm\node_modules\slide\lib\async-map.js:47:24)
+127 verbose stack     at C:\Program Files\nodejs\node_modules\npm\node_modules\read-installed\read-installed.js:251:14
+127 verbose stack     at cb (C:\Program Files\nodejs\node_modules\npm\node_modules\slide\lib\async-map.js:47:24)
+127 verbose stack     at C:\Program Files\nodejs\node_modules\npm\node_modules\read-installed\read-installed.js:251:14
+128 verbose cwd C:\Users\atodor\Desktop\Training\Task Manager\client
+129 error Windows_NT 6.1.7601
+130 error argv "C:\\Program Files\\nodejs\\\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "--save" "react-dom"
+131 error node v0.12.7
+132 error npm  v2.11.3
+133 error code EPEERINVALID
+134 error peerinvalid The package react does not satisfy its siblings' peerDependencies requirements!
+134 error peerinvalid Peer react-router@0.13.5 wants react@0.13.x||0.14.x
+134 error peerinvalid Peer react-dom@0.14.2 wants react@^0.14.2
+135 verbose exit [ 1, true ]

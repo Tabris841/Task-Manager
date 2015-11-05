@@ -12,7 +12,7 @@ router.post('/tasks', function(req, res) {
 	Task.create({
 		name: req.body.name,
 		deadline: req.body.deadline,
-		done: req.body.done
+		ListId: req.body.ListId
 	}).then(function() {
 		res.end();
 	});
@@ -22,7 +22,8 @@ router.put('/tasks', function(req, res) {
 	Task.update({
 		name: req.body.name,
 		deadline: req.body.deadline,
-		done: req.body.done
+		done: req.body.done,
+		ListId: req.body.ListId
 	}, {
 		where: {
 			id: req.body.id

@@ -11,9 +11,7 @@ router.get('/lists', function(req, res, err) {
 
 router.post('/lists', function(req, res) {
 	List.create({
-		name: req.body.name,
-		deadline: req.body.deadline,
-		TaskId: req.body.TaskId
+		name: req.body.name
 	}).then(function() {
 		res.end();
 	});
@@ -21,9 +19,7 @@ router.post('/lists', function(req, res) {
 
 router.put('/lists', function(req, res) {
 	List.update({
-		name: req.body.name,
-		deadline: req.body.deadline,
-		TaskId: req.body.TaskId
+		name: req.body.name
 	}, {
 		where: {
 			id: req.body.id
