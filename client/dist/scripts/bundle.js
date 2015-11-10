@@ -41402,8 +41402,8 @@ var _ = require('lodash');
 
 var findTasks = function (listId, task) {
     var tasks = [];
-    for(var i = 0, len = task.length; i < len; i += 1 ) {
-        if(listId === task[i].ListId) {
+    for (var i = 0, len = task.length; i < len; i += 1) {
+        if (listId === task[i].ListId) {
             tasks.push(task[i])
         }
     }
@@ -41440,6 +41440,7 @@ var TaskFrame = React.createClass({displayName: "TaskFrame",
                     ), 
                     React.createElement("div", {id: "taskNav"}, 
                         React.createElement("span", {className: "glyphicon glyphicon-plus"}), 
+
                         React.createElement("div", {className: "input-group"}, 
                             React.createElement("input", {type: "text", className: "form-control", 
                                    placeholder: "Start typing here to create a task..."}), 
@@ -41449,7 +41450,11 @@ var TaskFrame = React.createClass({displayName: "TaskFrame",
                         )
                     ), 
                     React.createElement("div", null, 
-                        this.state.task.map(createTask, this)
+                        React.createElement("table", {className: "table table-hover"}, 
+                            this.state.task.filter(function (obj) {
+                                return obj.ListId === list.id
+                            }).map(createTask, this)
+                        )
                     )
                 )
             )
@@ -41457,18 +41462,17 @@ var TaskFrame = React.createClass({displayName: "TaskFrame",
 
         var createTask = function (task) {
             return (
-                React.createElement("table", {className: "table table-hover"}, 
-                    React.createElement("tr", null, 
-                        React.createElement("td", {className: "col-md-1"}, 
-                            React.createElement("input", {type: "checkbox", className: "checkbox"})
-                        ), 
-                        React.createElement("td", {key: task.id, className: "col-md-9"}, task.name), 
-                        React.createElement("td", {className: "col-md-2"}, 
-                            React.createElement("span", {className: "glyphicon glyphicon-pencil"}), 
-                            React.createElement("span", {className: "glyphicon glyphicon-trash"})
-                        )
+                React.createElement("tr", null, 
+                    React.createElement("td", {className: "col-md-1"}, 
+                        React.createElement("input", {type: "checkbox", className: "checkbox"})
+                    ), 
+                    React.createElement("td", {key: task.id, className: "col-md-9"}, task.name), 
+                    React.createElement("td", {className: "col-md-2"}, 
+                        React.createElement("span", {className: "glyphicon glyphicon-pencil"}), 
+                        React.createElement("span", {className: "glyphicon glyphicon-trash"})
                     )
                 )
+
             )
         };
 

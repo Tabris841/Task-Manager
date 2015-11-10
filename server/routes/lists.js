@@ -2,12 +2,12 @@ var express = require('express'),
     router = express.Router(),
     Sequelize = require('sequelize'),
     List = require('../models/listModel'),
-    Task = require('../models/taskModel');
+    Task = require('../models/taskModel'),
     db = new Sequelize('ToDoList', null, null, {
-        host: 'localhost',
-        dialect: 'sqlite',
-        storage: './database/ToDoList.sqlite3'
-    });
+    host: 'localhost',
+    dialect: 'sqlite',
+    storage: './database/ToDoList.sqlite3'
+});
 
 
 router.get('/lists', function (req, res, err) {
@@ -15,18 +15,22 @@ router.get('/lists', function (req, res, err) {
     var Tasks = [];
 
     List.findAll().then(function (list) {
-        ListItems = list;
-    }).then(function () {
-        Task.findAll().then(function (task) {
-            Tasks = task;
-            var result = [];
-            var result = ListItems.concat(Tasks);
-            res.json(result);
-
-        });
+        res.json(list);
     });
 
-    //db.query("SELECT * FROM 'Tasks' T JOIN 'Lists' L ON T.ListId = L.id", {
+    //List.findAll().then(function (list) {
+    //    ListItems = list;
+    //}).then(function () {
+    //    Task.findAll().then(function (task) {
+    //        Tasks = task;
+    //        var result = [];
+    //        var result = ListItems.concat(Tasks);
+    //        res.json(result);
+    //
+    //    });
+    //});
+
+    //Sequelize.query("SELECT * FROM 'Tasks' T JOIN 'Lists' L ON T.ListId = L.id", {
     //        replacements: ['active'],
     //        type: sequelize.QueryTypes.SELECT
     //    }
@@ -36,7 +40,6 @@ router.get('/lists', function (req, res, err) {
     //})
 
 });
-
 
 router.post('/lists', function (req, res) {
     List.create({

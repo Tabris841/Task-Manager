@@ -6,8 +6,8 @@ var _ = require('lodash');
 
 var findTasks = function (listId, task) {
     var tasks = [];
-    for(var i = 0, len = task.length; i < len; i += 1 ) {
-        if(listId === task[i].ListId) {
+    for (var i = 0, len = task.length; i < len; i += 1) {
+        if (listId === task[i].ListId) {
             tasks.push(task[i])
         }
     }
@@ -44,6 +44,7 @@ var TaskFrame = React.createClass({
                     </div>
                     <div id="taskNav">
                         <span className="glyphicon glyphicon-plus"></span>
+
                         <div className="input-group">
                             <input type="text" className="form-control"
                                    placeholder="Start typing here to create a task..."/>
@@ -53,7 +54,11 @@ var TaskFrame = React.createClass({
                         </div>
                     </div>
                     <div>
-                        {this.state.task.map(createTask, this)}
+                        <table className="table table-hover">
+                            {this.state.task.filter(function (obj) {
+                                return obj.ListId === list.id
+                            }).map(createTask, this)}
+                        </table>
                     </div>
                 </div>
             )
@@ -61,18 +66,17 @@ var TaskFrame = React.createClass({
 
         var createTask = function (task) {
             return (
-                <table className="table table-hover">
-                    <tr>
-                        <td className="col-md-1">
-                            <input type="checkbox" className="checkbox"/>
-                        </td>
-                        <td key={task.id} className="col-md-9">{task.name}</td>
-                        <td className="col-md-2">
-                            <span className="glyphicon glyphicon-pencil"></span>
-                            <span className="glyphicon glyphicon-trash"></span>
-                        </td>
-                    </tr>
-                </table>
+                <tr>
+                    <td className="col-md-1">
+                        <input type="checkbox" className="checkbox"/>
+                    </td>
+                    <td key={task.id} className="col-md-9">{task.name}</td>
+                    <td className="col-md-2">
+                        <span className="glyphicon glyphicon-pencil"></span>
+                        <span className="glyphicon glyphicon-trash"></span>
+                    </td>
+                </tr>
+
             )
         };
 
