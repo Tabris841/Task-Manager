@@ -40584,6 +40584,9 @@ module.exports = require('./lib/React');
 var ListApi = {
     getAllLists: function() {
         return $.get("http://localhost:9002/lists")
+    },
+    saveList: function() {
+        return $.post("http://localhost:9002/lists")
     }
 };
 
@@ -40593,6 +40596,9 @@ module.exports = ListApi;
 var TaskApi = {
     getAllTask: function() {
         return $.get("http://localhost:9002/tasks")
+    },
+    postTask: function() {
+        return $.post("http://localhost:9002/tasks")
     }
 };
 
@@ -40661,11 +40667,12 @@ var ListFrame = React.createClass({displayName: "ListFrame",
 });
 
 module.exports = ListFrame;
-},{"../api/listApi":161,"../api/taskApi":162,"./taskFrame":165,"react":160}],164:[function(require,module,exports){
+},{"../api/listApi":161,"../api/taskApi":162,"./taskFrame":166,"react":160}],164:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
 var LisFrame = require('./listFrame');
+var ModalList = require('./modalList');
 
 var MainPage = React.createClass({displayName: "MainPage",
     render: function () {
@@ -40679,22 +40686,57 @@ var MainPage = React.createClass({displayName: "MainPage",
                     "Add TODO List"
                 ), 
 
-                React.createElement("div", {className: "modal fade", id: "addListModal", "data-tabindex": "-1", role: "dialog", "aria-labelledby": "myModalLabel"}, 
-                    React.createElement("div", {className: "modal-dialog", role: "document"}, 
-                        React.createElement("div", {className: "modal-content"}, 
-                            React.createElement("div", {className: "modal-header"}, 
-                                React.createElement("button", {type: "button", className: "close", "data-dismiss": "modal", "aria-label": "Close"}, React.createElement("span", {
-                                    "aria-hidden": "true"}, "×")), 
-                                React.createElement("h4", {className: "modal-title"}, "List title")
+                React.createElement(ModalList, null)
+            )
+        )
+    }
+});
+
+module.exports = MainPage;
+},{"./listFrame":163,"./modalList":165,"react":160}],165:[function(require,module,exports){
+"use strict";
+
+var React = require('react');
+var ListApi = require('../api/listApi');
+
+var ModalList = React.createClass({displayName: "ModalList",
+    getInitialState: function() {
+        return {
+            name: ''
+        };
+    },
+    setListState: function(event) {
+        return this.setState({name: event.target.value})
+    },
+
+    clearField: function(input, val) {
+        if(input.value == val)
+            input.value="";
+    },
+
+    render: function () {
+        var saveList = function (list) {
+            ListApi.saveList(list);
+        };
+
+        return (
+            React.createElement("div", {className: "modal fade", id: "addListModal", "data-tabindex": "-1", role: "dialog", 
+                 "aria-labelledby": "myModalLabel"}, 
+                React.createElement("div", {className: "modal-dialog", role: "document"}, 
+                    React.createElement("div", {className: "modal-content"}, 
+                        React.createElement("div", {className: "modal-header"}, 
+                            React.createElement("button", {type: "button", className: "close", "data-dismiss": "modal", "aria-label": "Close"}, React.createElement("span", {
+                                "aria-hidden": "true"}, "×")), 
+                            React.createElement("h4", {className: "modal-title"}, "List title")
+                        ), 
+                        React.createElement("div", {className: "modal-body"}, 
+                            React.createElement("input", {type: "text", className: "form-control", value: this.state.name, onChange: this.setListState, 
+                                   placeholder: "Enter List name..."})
+                        ), 
+                        React.createElement("div", {className: "modal-footer"}, 
+                            React.createElement("button", {type: "button", className: "btn btn-primary", onclick: saveList(this.state.name)}, "Save"
                             ), 
-                            React.createElement("div", {className: "modal-body"}, 
-                                React.createElement("input", {type: "text", className: "form-control", 
-                                       placeholder: "Enter List name..."})
-                            ), 
-                            React.createElement("div", {className: "modal-footer"}, 
-                                React.createElement("button", {type: "button", className: "btn btn-primary"}, "Save"), 
-                                React.createElement("button", {type: "button", className: "btn btn-default", "data-dismiss": "modal"}, "Close")
-                            )
+                            React.createElement("button", {type: "button", className: "btn btn-default", "data-dismiss": "modal", onclick: this.getInitialState()}, "Close")
                         )
                     )
                 )
@@ -40703,8 +40745,9 @@ var MainPage = React.createClass({displayName: "MainPage",
     }
 });
 
-module.exports = MainPage;
-},{"./listFrame":163,"react":160}],165:[function(require,module,exports){
+module.exports = ModalList;
+
+},{"../api/listApi":161,"react":160}],166:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -40744,7 +40787,7 @@ var TaskFrame = React.createClass({displayName: "TaskFrame",
 
 module.exports = TaskFrame;
 
-},{"react":160}],166:[function(require,module,exports){
+},{"react":160}],167:[function(require,module,exports){
 $ = jQuery = require('jquery');
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -40753,4 +40796,4 @@ var MainPage = require('./components/mainPage');
 
 ReactDOM.render(React.createElement(MainPage, null), document.getElementById('app'));
 
-},{"./components/mainPage":164,"jquery":2,"lodash":3,"react":160,"react-dom":4}]},{},[166]);
+},{"./components/mainPage":164,"jquery":2,"lodash":3,"react":160,"react-dom":4}]},{},[167]);
