@@ -1,28 +1,28 @@
 "use strict";
 
 var React = require('react');
-var ListApi = require('../api/listApi');
-var TaskApi = require('../api/taskApi');
 var TaskFrame = require('./taskFrame');
 
 var ListFrame = React.createClass({
     getInitialState: function () {
         return {
-            list: [],
-            task: []
+            value: ''
         };
     },
-    componentDidMount: function () {
-        var self = this;
-        if (self.isMounted()) {
-            ListApi.getAllLists().then(function (data) {
-                self.setState({list: data});
-            });
-            TaskApi.getAllTask().then(function (data) {
-                self.setState({task: data})
-            });
+
+    handleSubmit: function (e) {
+        e.preventDefault();
+        var form = e.target;
+        var text = form.querySelector('[name="text"]').value.trim();
+        var listId = form.name;
+        if (!text) {
+            return;
         }
+        this.props.onTaskSubmit({name: text, ListId: listId});
+        form.querySelector('[name="text"]').value = '';
+        return;
     },
+
     render: function () {
         var createList = function (list) {
             return (
@@ -34,27 +34,26 @@ var ListFrame = React.createClass({
                         &nbsp;&nbsp;
                         <span className="glyphicon glyphicon-pencil pull-right"></span>
                     </div>
-                    <div id="taskNav">
+                    <form id="taskNav" onSubmit={this.handleSubmit} name={list.id}>
                         <span className="glyphicon glyphicon-plus"></span>
 
                         <div className="input-group">
-                            <input type="text" className="form-control"
+                            <input type="text" className="form-control" name="text"
                                    placeholder="Start typing here to create a task..."/>
-                    <span className="input-group-btn">
-                        <button className="btn btn-success">Add Task</button>
-                    </span>
+                            <span className="input-group-btn">
+                                <input type="submit" className="btn btn-success" value="Add task"/>
+                            </span>
                         </div>
-                    </div>
+                    </form>
                     <div>
-                        <TaskFrame task={this.state.task} list={list.id}/>
+                        <TaskFrame task={this.props.task} list={list.id}/>
                     </div>
                 </div>
             )
         };
-
         return (
             <div>
-                {this.state.list.map(createList, this)}
+                {this.props.list.map(createList, this)}
             </div>
         )
     }

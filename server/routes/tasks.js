@@ -14,7 +14,9 @@ router.post('/tasks', function(req, res) {
 		deadline: req.body.deadline,
 		ListId: req.body.ListId
 	}).then(function() {
-		res.end();
+		Task.findAll().then(function(task) {
+			res.json(task);
+		});
 	});
 });
 

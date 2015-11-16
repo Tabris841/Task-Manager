@@ -40584,9 +40584,6 @@ module.exports = require('./lib/React');
 var ListApi = {
     getAllLists: function() {
         return $.get("http://localhost:9002/lists")
-    },
-    saveList: function() {
-        return $.post("http://localhost:9002/lists")
     }
 };
 
@@ -40607,28 +40604,28 @@ module.exports = TaskApi;
 "use strict";
 
 var React = require('react');
-var ListApi = require('../api/listApi');
-var TaskApi = require('../api/taskApi');
 var TaskFrame = require('./taskFrame');
 
 var ListFrame = React.createClass({displayName: "ListFrame",
     getInitialState: function () {
         return {
-            list: [],
-            task: []
+            value: ''
         };
     },
-    componentDidMount: function () {
-        var self = this;
-        if (self.isMounted()) {
-            ListApi.getAllLists().then(function (data) {
-                self.setState({list: data});
-            });
-            TaskApi.getAllTask().then(function (data) {
-                self.setState({task: data})
-            });
+
+    handleSubmit: function (e) {
+        e.preventDefault();
+        var form = e.target;
+        var text = form.querySelector('[name="text"]').value.trim();
+        var listId = form.name;
+        if (!text) {
+            return;
         }
+        this.props.onTaskSubmit({name: text, ListId: listId});
+        form.querySelector('[name="text"]').value = '';
+        return;
     },
+
     render: function () {
         var createList = function (list) {
             return (
@@ -40640,85 +40637,121 @@ var ListFrame = React.createClass({displayName: "ListFrame",
                         "  ", 
                         React.createElement("span", {className: "glyphicon glyphicon-pencil pull-right"})
                     ), 
-                    React.createElement("div", {id: "taskNav"}, 
+                    React.createElement("form", {id: "taskNav", onSubmit: this.handleSubmit, name: list.id}, 
                         React.createElement("span", {className: "glyphicon glyphicon-plus"}), 
 
                         React.createElement("div", {className: "input-group"}, 
-                            React.createElement("input", {type: "text", className: "form-control", 
+                            React.createElement("input", {type: "text", className: "form-control", name: "text", 
                                    placeholder: "Start typing here to create a task..."}), 
-                    React.createElement("span", {className: "input-group-btn"}, 
-                        React.createElement("button", {className: "btn btn-success"}, "Add Task")
-                    )
+                            React.createElement("span", {className: "input-group-btn"}, 
+                                React.createElement("input", {type: "submit", className: "btn btn-success", value: "Add task"})
+                            )
                         )
                     ), 
                     React.createElement("div", null, 
-                        React.createElement(TaskFrame, {task: this.state.task, list: list.id})
+                        React.createElement(TaskFrame, {task: this.props.task, list: list.id})
                     )
                 )
             )
         };
-
         return (
             React.createElement("div", null, 
-                this.state.list.map(createList, this)
+                this.props.list.map(createList, this)
             )
         )
     }
 });
 
 module.exports = ListFrame;
-},{"../api/listApi":161,"../api/taskApi":162,"./taskFrame":166,"react":160}],164:[function(require,module,exports){
+},{"./taskFrame":166,"react":160}],164:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
 var LisFrame = require('./listFrame');
+var ListApi = require('../api/listApi');
+var TaskApi = require('../api/taskApi');
 var ModalList = require('./modalList');
 
 var MainPage = React.createClass({displayName: "MainPage",
+    getInitialState: function () {
+        return {
+            list: [],
+            task: []
+
+        };
+    },
+
+    handleTaskSubmit: function(task) {
+        $.ajax({
+            url: "http://localhost:9002/tasks",
+            dataType: 'json',
+            type: 'POST',
+            data: task,
+            success: function(data) {
+                this.setState({task: data});
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error("http://localhost:9002/tasks", status, err.toString());
+            }.bind(this)
+        });
+    },
+
+    componentDidMount: function () {
+        if (this.isMounted()) {
+            $.ajax({
+                url: "http://localhost:9002/lists",
+                dataType: 'json',
+                cache: false,
+                success: function(data) {
+                    this.setState({list: data});
+                }.bind(this),
+                error: function(xhr, status, err) {
+                    console.error("http://localhost:9002/lists", status, err.toString());
+                }.bind(this)
+            });
+
+            $.ajax({
+                url: "http://localhost:9002/tasks",
+                dataType: 'json',
+                cache: false,
+                success: function(data) {
+                    this.setState({task: data});
+                }.bind(this),
+                error: function(xhr, status, err) {
+                    console.error("http://localhost:9002/tasks", status, err.toString());
+                }.bind(this)
+            });
+        }
+    },
+
+    setListState: function (event) {
+        return this.setState({name: event.target.value})
+    },
+
     render: function () {
         return (
             React.createElement("div", null, 
-                React.createElement(LisFrame, null), 
+                React.createElement(LisFrame, {list: this.state.list, task: this.state.task, onTaskSubmit: this.handleTaskSubmit}), 
                 React.createElement("button", {type: "button", className: "btn btn-primary", id: "toDoBtn", "data-toggle": "modal", 
                         "data-target": "#addListModal"}, 
                     React.createElement("span", {className: "glyphicon glyphicon-plus"}), 
                     "  " + ' ' +
                     "Add TODO List"
-                ), 
+                )
 
-                React.createElement(ModalList, null)
             )
         )
     }
 });
 
 module.exports = MainPage;
-},{"./listFrame":163,"./modalList":165,"react":160}],165:[function(require,module,exports){
+},{"../api/listApi":161,"../api/taskApi":162,"./listFrame":163,"./modalList":165,"react":160}],165:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
-var ListApi = require('../api/listApi');
 
 var ModalList = React.createClass({displayName: "ModalList",
-    getInitialState: function() {
-        return {
-            name: ''
-        };
-    },
-    setListState: function(event) {
-        return this.setState({name: event.target.value})
-    },
-
-    clearField: function(input, val) {
-        if(input.value == val)
-            input.value="";
-    },
-
     render: function () {
-        var saveList = function (list) {
-            ListApi.saveList(list);
-        };
-
         return (
             React.createElement("div", {className: "modal fade", id: "addListModal", "data-tabindex": "-1", role: "dialog", 
                  "aria-labelledby": "myModalLabel"}, 
@@ -40730,13 +40763,12 @@ var ModalList = React.createClass({displayName: "ModalList",
                             React.createElement("h4", {className: "modal-title"}, "List title")
                         ), 
                         React.createElement("div", {className: "modal-body"}, 
-                            React.createElement("input", {type: "text", className: "form-control", value: this.state.name, onChange: this.setListState, 
-                                   placeholder: "Enter List name..."})
+                            React.createElement("input", {type: "text", className: "form-control", placeholder: "Enter List name..."})
                         ), 
                         React.createElement("div", {className: "modal-footer"}, 
-                            React.createElement("button", {type: "button", className: "btn btn-primary", onclick: saveList(this.state.name)}, "Save"
+                            React.createElement("button", {type: "button", className: "btn btn-primary", onclick: this.props.postList(this.props.name)}, "Save"
                             ), 
-                            React.createElement("button", {type: "button", className: "btn btn-default", "data-dismiss": "modal", onclick: this.getInitialState()}, "Close")
+                            React.createElement("button", {type: "button", className: "btn btn-default", "data-dismiss": "modal"}, "Close")
                         )
                     )
                 )
@@ -40747,7 +40779,7 @@ var ModalList = React.createClass({displayName: "ModalList",
 
 module.exports = ModalList;
 
-},{"../api/listApi":161,"react":160}],166:[function(require,module,exports){
+},{"react":160}],166:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
