@@ -15,6 +15,12 @@
     height: 50px;
     padding-left: 20px;
     padding-top: 5px; }
+    #app #taskTable #taskHeader button {
+      border: none;
+      background: none; }
+    #app #taskTable #taskHeader button:focus {
+      outline: none;
+      border: none; }
     #app #taskTable #taskHeader .glyphicon-calendar {
       font-size: 1.3em;
       color: #284266; }
@@ -56,6 +62,12 @@
   #app #taskTable table td:nth-child(3) {
     padding-left: 40px;
     color: #979798; }
+    #app #taskTable table td:nth-child(3) button {
+      border: none;
+      background: none; }
+    #app #taskTable table td:nth-child(3) button:focus {
+      outline: none;
+      border: none; }
     #app #taskTable table td:nth-child(3) .glyphicon-pencil {
       border-right: 1px solid #A0B7D5;
       padding-right: 5px;

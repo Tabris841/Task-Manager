@@ -2,15 +2,37 @@
 
 var React = require('react');
 var TaskFrame = require('./taskFrame');
+var Modal = require('./modal');
 
 var ListFrame = React.createClass({
     getInitialState: function () {
         return {
-            value: ''
+            value: "",
+            showModal: false
         };
     },
 
-    handleSubmit: function (e) {
+    close() {
+        this.setState({showModal: false});
+    },
+
+    open(list) {
+        this.setState({
+            showModal: true,
+            value: list
+        });
+    },
+
+    editList: function(list, e) {
+        e.preventDefault();
+        var listName = list;
+        if (!listName) {
+            return;
+        }
+        this.props.onTaskSubmit({name: listName});
+    },
+
+    createTask: function (e) {
         e.preventDefault();
         var form = e.target;
         var text = form.querySelector('[name="text"]').value.trim();
@@ -20,7 +42,6 @@ var ListFrame = React.createClass({
         }
         this.props.onTaskSubmit({name: text, ListId: listId});
         form.querySelector('[name="text"]').value = '';
-        return;
     },
 
     render: function () {
@@ -30,11 +51,15 @@ var ListFrame = React.createClass({
                     <div id="taskHeader">
                         <span className="glyphicon glyphicon-calendar"></span>
                         <h4>{list.name}</h4>
-                        <span className="glyphicon glyphicon-trash pull-right"></span>
+                        <button className="pull-right">
+                            <span className="glyphicon glyphicon-trash"></span>
+                        </button>
                         &nbsp;&nbsp;
-                        <span className="glyphicon glyphicon-pencil pull-right"></span>
+                        <button className="pull-right" onClick={this.open.bind(this, list.name)}>
+                            <span className="glyphicon glyphicon-pencil"></span>
+                        </button>
                     </div>
-                    <form id="taskNav" onSubmit={this.handleSubmit} name={list.id}>
+                    <form id="taskNav" onSubmit={this.createTask} name={list.id}>
                         <span className="glyphicon glyphicon-plus"></span>
 
                         <div className="input-group">
@@ -46,7 +71,7 @@ var ListFrame = React.createClass({
                         </div>
                     </form>
                     <div>
-                        <TaskFrame task={this.props.task} list={list.id}/>
+                        <TaskFrame task={this.props.task} list={list.id} onDeleteTask={this.props.onDeleteTask}/>
                     </div>
                 </div>
             )
@@ -54,6 +79,7 @@ var ListFrame = React.createClass({
         return (
             <div>
                 {this.props.list.map(createList, this)}
+                <Modal showModal={this.state.showModal} close={this.close} value={this.state.value} handleSubmit={this.editList}/>
             </div>
         )
     }

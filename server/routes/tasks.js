@@ -36,12 +36,14 @@ router.put('/tasks', function(req, res) {
 });
 
 router.delete('/tasks', function(req, res) {
-	Tasks.destroy({
+	Task.destroy({
 		where: {
 			id: req.body.id
 		}
 	}).then(function() {
-		res.end();
+		Task.findAll().then(function(task) {
+			res.json(task);
+		});
 	});
 });
 
