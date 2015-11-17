@@ -44008,6 +44008,7 @@ var ListFrame = React.createClass({displayName: "ListFrame",
     getInitialState: function () {
         return {
             value: "",
+            id: "",
             showModal: false
         };
     },
@@ -44016,20 +44017,22 @@ var ListFrame = React.createClass({displayName: "ListFrame",
         this.setState({showModal: false});
     },
 
-    open(list) {
+    open(name, id) {
         this.setState({
             showModal: true,
-            value: list
+            value: name,
+            id: id
         });
     },
 
     editList: function (list, e) {
         e.preventDefault();
-        var listName = list;
+        var listName = list.name;
+        var listId = list.id;
         if (!listName) {
             return;
         }
-        this.props.onTaskSubmit({name: listName});
+        this.props.onEditList({name: listName, id: listId});
     },
 
     createTask: function (e) {
@@ -44056,11 +44059,11 @@ var ListFrame = React.createClass({displayName: "ListFrame",
                     React.createElement("div", {id: "taskHeader"}, 
                         React.createElement("span", {className: "glyphicon glyphicon-calendar"}), 
                         React.createElement("h4", null, list.name), 
-                        React.createElement("button", {className: "pull-right", onClick: this.deleteList.bind(this,list.id)}, 
+                        React.createElement("button", {className: "pull-right", onClick: this.deleteList.bind(this, [list.name, list.id])}, 
                             React.createElement("span", {className: "glyphicon glyphicon-trash"})
                         ), 
                         "  ", 
-                        React.createElement("button", {className: "pull-right", onClick: this.open.bind(this, list.name)}, 
+                        React.createElement("button", {className: "pull-right", onClick: this.open.bind(this, list.name, list.id)}, 
                             React.createElement("span", {className: "glyphicon glyphicon-pencil"})
                         )
                     ), 
@@ -44084,7 +44087,7 @@ var ListFrame = React.createClass({displayName: "ListFrame",
         return (
             React.createElement("div", null, 
                 this.props.list.map(createList, this), 
-                React.createElement(Modal, {showModal: this.state.showModal, close: this.close, value: this.state.value, 
+                React.createElement(Modal, {showModal: this.state.showModal, close: this.close, value: this.state.value, id: this.state.id, 
                        handleSubmit: this.editList})
             )
         )
@@ -44119,14 +44122,29 @@ var MainPage = React.createClass({displayName: "MainPage",
         this.setState({showModal: true});
     },
 
-    createList: function(list, e) {
+    createList: function (list, e) {
         e.preventDefault();
-        var listName = list;
+        var listName = list.value;
         if (!listName) {
             return;
         }
         this.handleCreateList({name: listName});
         this.setState({showModal: false});
+    },
+
+    handleEditList: function (list) {
+        $.ajax({
+            url: "http://localhost:9002/lists",
+            dataType: 'json',
+            type: 'PUT',
+            data: list,
+            success: function (data) {
+                this.setState({list: data});
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error("http://localhost:9002/lists", status, err.toString());
+            }.bind(this)
+        });
     },
 
     handleCreateList: function (list) {
@@ -44224,14 +44242,18 @@ var MainPage = React.createClass({displayName: "MainPage",
     render: function () {
         return (
             React.createElement("div", null, 
-                React.createElement(LisFrame, {list: this.state.list, task: this.state.task, onTaskSubmit: this.handleCreateTask, onDeleteList: this.handleDeleteList, 
-                           onDeleteTask: this.handleDeleteTask}), 
+                React.createElement(LisFrame, {list: this.state.list, task: this.state.task, 
+                          onTaskSubmit: this.handleCreateTask, 
+                          onDeleteList: this.handleDeleteList, 
+                          onEditList: this.handleEditList, 
+                          onDeleteTask: this.handleDeleteTask}), 
                 React.createElement("button", {type: "button", className: "btn btn-primary", id: "toDoBtn", onClick: this.open}, 
                     React.createElement("span", {className: "glyphicon glyphicon-plus"}), 
                     "  " + ' ' +
                     "Add TODO List"
                 ), 
-                React.createElement(Modal, {showModal: this.state.showModal, close: this.close, value: this.state.value, handleSubmit: this.createList})
+                React.createElement(Modal, {showModal: this.state.showModal, close: this.close, value: this.state.value, 
+                       handleSubmit: this.createList})
             )
         )
     }
@@ -44262,6 +44284,10 @@ var Modals = React.createClass ({displayName: "Modals",
     },
 
     render: function () {
+        var test = {
+            value: this.state.value,
+            id: this.props.id
+        };
         return (
             React.createElement(Modal, {show: this.props.showModal, onHide: this.props.close}, 
                 React.createElement(Modal.Header, {closeButton: true}, 
@@ -44272,7 +44298,7 @@ var Modals = React.createClass ({displayName: "Modals",
                 ), 
                 React.createElement(Modal.Footer, null, 
                     React.createElement(Button, {bsStyle: "primary", 
-                            onClick: this.props.handleSubmit.bind(null, this.state.value)}, "Save"), 
+                            onClick: this.props.handleSubmit.bind(null, test)}, "Save"), 
                     React.createElement(Button, {onClick: this.props.close}, "Close")
                 )
             )

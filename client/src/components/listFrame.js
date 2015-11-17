@@ -8,6 +8,7 @@ var ListFrame = React.createClass({
     getInitialState: function () {
         return {
             value: "",
+            id: "",
             showModal: false
         };
     },
@@ -16,20 +17,22 @@ var ListFrame = React.createClass({
         this.setState({showModal: false});
     },
 
-    open(list) {
+    open(name, id) {
         this.setState({
             showModal: true,
-            value: list
+            value: name,
+            id: id
         });
     },
 
     editList: function (list, e) {
         e.preventDefault();
-        var listName = list;
+        var listName = list.name;
+        var listId = list.id;
         if (!listName) {
             return;
         }
-        this.props.onTaskSubmit({name: listName});
+        this.props.onEditList({name: listName, id: listId});
     },
 
     createTask: function (e) {
@@ -56,11 +59,11 @@ var ListFrame = React.createClass({
                     <div id="taskHeader">
                         <span className="glyphicon glyphicon-calendar"></span>
                         <h4>{list.name}</h4>
-                        <button className="pull-right" onClick={this.deleteList.bind(this,list.id)}>
+                        <button className="pull-right" onClick={this.deleteList.bind(this, [list.name, list.id])}>
                             <span className="glyphicon glyphicon-trash"></span>
                         </button>
                         &nbsp;&nbsp;
-                        <button className="pull-right" onClick={this.open.bind(this, list.name)}>
+                        <button className="pull-right" onClick={this.open.bind(this, list.name, list.id)}>
                             <span className="glyphicon glyphicon-pencil"></span>
                         </button>
                     </div>
@@ -84,7 +87,7 @@ var ListFrame = React.createClass({
         return (
             <div>
                 {this.props.list.map(createList, this)}
-                <Modal showModal={this.state.showModal} close={this.close} value={this.state.value}
+                <Modal showModal={this.state.showModal} close={this.close} value={this.state.value} id={this.state.id}
                        handleSubmit={this.editList}/>
             </div>
         )

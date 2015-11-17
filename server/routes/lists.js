@@ -59,7 +59,9 @@ router.put('/lists', function (req, res) {
             id: req.body.id
         }
     }).then(function () {
-        res.end();
+        List.findAll().then(function (list) {
+            res.json(list);
+        });
     });
 });
 

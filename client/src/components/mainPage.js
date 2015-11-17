@@ -24,14 +24,29 @@ var MainPage = React.createClass({
         this.setState({showModal: true});
     },
 
-    createList: function(list, e) {
+    createList: function (list, e) {
         e.preventDefault();
-        var listName = list;
+        var listName = list.value;
         if (!listName) {
             return;
         }
         this.handleCreateList({name: listName});
         this.setState({showModal: false});
+    },
+
+    handleEditList: function (list) {
+        $.ajax({
+            url: "http://localhost:9002/lists",
+            dataType: 'json',
+            type: 'PUT',
+            data: list,
+            success: function (data) {
+                this.setState({list: data});
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error("http://localhost:9002/lists", status, err.toString());
+            }.bind(this)
+        });
     },
 
     handleCreateList: function (list) {
@@ -129,14 +144,18 @@ var MainPage = React.createClass({
     render: function () {
         return (
             <div>
-                <LisFrame list={this.state.list} task={this.state.task} onTaskSubmit={this.handleCreateTask} onDeleteList={this.handleDeleteList}
-                           onDeleteTask={this.handleDeleteTask} />
+                <LisFrame list={this.state.list} task={this.state.task}
+                          onTaskSubmit={this.handleCreateTask}
+                          onDeleteList={this.handleDeleteList}
+                          onEditList={this.handleEditList}
+                          onDeleteTask={this.handleDeleteTask}/>
                 <button type="button" className="btn btn-primary" id="toDoBtn" onClick={this.open}>
                     <span className="glyphicon glyphicon-plus"></span>
                     &nbsp;&nbsp;
                     Add TODO List
                 </button>
-                <Modal showModal={this.state.showModal} close={this.close} value={this.state.value} handleSubmit={this.createList}/>
+                <Modal showModal={this.state.showModal} close={this.close} value={this.state.value}
+                       handleSubmit={this.createList}/>
             </div>
         )
     }

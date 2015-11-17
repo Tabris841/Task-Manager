@@ -21,6 +21,10 @@ var Modals = React.createClass ({
     },
 
     render: function () {
+        var test = {
+            value: this.state.value,
+            id: this.props.id
+        };
         return (
             <Modal show={this.props.showModal} onHide={this.props.close}>
                 <Modal.Header closeButton>
@@ -31,7 +35,7 @@ var Modals = React.createClass ({
                 </Modal.Body>
                 <Modal.Footer>
                     <Button bsStyle="primary"
-                            onClick={this.props.handleSubmit.bind(null, this.state.value)}>Save</Button>
+                            onClick={this.props.handleSubmit.bind(null, test)}>Save</Button>
                     <Button onClick={this.props.close}>Close</Button>
                 </Modal.Footer>
             </Modal>
