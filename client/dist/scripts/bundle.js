@@ -44044,6 +44044,11 @@ var ListFrame = React.createClass({displayName: "ListFrame",
         form.querySelector('[name="text"]').value = '';
     },
 
+    deleteList: function (list, e) {
+        e.preventDefault();
+        this.props.onDeleteList({id: list});
+    },
+
     render: function () {
         var createList = function (list) {
             return (
@@ -44051,7 +44056,7 @@ var ListFrame = React.createClass({displayName: "ListFrame",
                     React.createElement("div", {id: "taskHeader"}, 
                         React.createElement("span", {className: "glyphicon glyphicon-calendar"}), 
                         React.createElement("h4", null, list.name), 
-                        React.createElement("button", {className: "pull-right"}, 
+                        React.createElement("button", {className: "pull-right", onClick: this.deleteList.bind(this,list.id)}, 
                             React.createElement("span", {className: "glyphicon glyphicon-trash"})
                         ), 
                         "  ", 
@@ -44115,7 +44120,6 @@ var MainPage = React.createClass({displayName: "MainPage",
     },
 
     createList: function(list, e) {
-        console.log(list);
         e.preventDefault();
         var listName = list;
         if (!listName) {
@@ -44131,6 +44135,21 @@ var MainPage = React.createClass({displayName: "MainPage",
             dataType: 'json',
             type: 'POST',
             data: list,
+            success: function (data) {
+                this.setState({list: data});
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error("http://localhost:9002/lists", status, err.toString());
+            }.bind(this)
+        });
+    },
+
+    handleDeleteList: function (id) {
+        $.ajax({
+            url: "http://localhost:9002/lists",
+            dataType: 'json',
+            type: 'DELETE',
+            data: id,
             success: function (data) {
                 this.setState({list: data});
             }.bind(this),
@@ -44205,7 +44224,7 @@ var MainPage = React.createClass({displayName: "MainPage",
     render: function () {
         return (
             React.createElement("div", null, 
-                React.createElement(LisFrame, {list: this.state.list, task: this.state.task, onTaskSubmit: this.handleCreateTask, 
+                React.createElement(LisFrame, {list: this.state.list, task: this.state.task, onTaskSubmit: this.handleCreateTask, onDeleteList: this.handleDeleteList, 
                            onDeleteTask: this.handleDeleteTask}), 
                 React.createElement("button", {type: "button", className: "btn btn-primary", id: "toDoBtn", onClick: this.open}, 
                     React.createElement("span", {className: "glyphicon glyphicon-plus"}), 
@@ -44315,7 +44334,8 @@ var TaskFrame = React.createClass({displayName: "TaskFrame",
                     this.props.task.filter(function (obj) {
                         return obj.ListId === listId
                     }).map(function (task) {
-                        return React.createElement(TaskRow, {task: task, key: task.id, setTask: that.setTask});
+                        return React.createElement(TaskRow, {task: task, key: task.id, setTask: that.setTask, 
+                                        onDeleteTask: this.props.onDeleteTask});
                     }, this)
                     )
                 ), 

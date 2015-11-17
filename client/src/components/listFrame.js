@@ -44,6 +44,11 @@ var ListFrame = React.createClass({
         form.querySelector('[name="text"]').value = '';
     },
 
+    deleteList: function (list, e) {
+        e.preventDefault();
+        this.props.onDeleteList({id: list});
+    },
+
     render: function () {
         var createList = function (list) {
             return (
@@ -51,7 +56,7 @@ var ListFrame = React.createClass({
                     <div id="taskHeader">
                         <span className="glyphicon glyphicon-calendar"></span>
                         <h4>{list.name}</h4>
-                        <button className="pull-right">
+                        <button className="pull-right" onClick={this.deleteList.bind(this,list.id)}>
                             <span className="glyphicon glyphicon-trash"></span>
                         </button>
                         &nbsp;&nbsp;

@@ -50,7 +50,8 @@ var TaskFrame = React.createClass({
                     {this.props.task.filter(function (obj) {
                         return obj.ListId === listId
                     }).map(function (task) {
-                        return <TaskRow task={task} key={task.id} setTask={that.setTask}/>;
+                        return <TaskRow task={task} key={task.id} setTask={that.setTask}
+                                        onDeleteTask={this.props.onDeleteTask}/>;
                     }, this)}
                     </tbody>
                 </table>

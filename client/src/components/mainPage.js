@@ -25,7 +25,6 @@ var MainPage = React.createClass({
     },
 
     createList: function(list, e) {
-        console.log(list);
         e.preventDefault();
         var listName = list;
         if (!listName) {
@@ -41,6 +40,21 @@ var MainPage = React.createClass({
             dataType: 'json',
             type: 'POST',
             data: list,
+            success: function (data) {
+                this.setState({list: data});
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error("http://localhost:9002/lists", status, err.toString());
+            }.bind(this)
+        });
+    },
+
+    handleDeleteList: function (id) {
+        $.ajax({
+            url: "http://localhost:9002/lists",
+            dataType: 'json',
+            type: 'DELETE',
+            data: id,
             success: function (data) {
                 this.setState({list: data});
             }.bind(this),
@@ -115,7 +129,7 @@ var MainPage = React.createClass({
     render: function () {
         return (
             <div>
-                <LisFrame list={this.state.list} task={this.state.task} onTaskSubmit={this.handleCreateTask}
+                <LisFrame list={this.state.list} task={this.state.task} onTaskSubmit={this.handleCreateTask} onDeleteList={this.handleDeleteList}
                            onDeleteTask={this.handleDeleteTask} />
                 <button type="button" className="btn btn-primary" id="toDoBtn" onClick={this.open}>
                     <span className="glyphicon glyphicon-plus"></span>
