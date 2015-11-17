@@ -32,11 +32,12 @@ var MainPage = React.createClass({
             return;
         }
         this.handleCreateList({name: listName});
+        this.setState({showModal: false});
     },
 
     handleCreateList: function (list) {
         $.ajax({
-            url: "http://localhost:9002/list",
+            url: "http://localhost:9002/lists",
             dataType: 'json',
             type: 'POST',
             data: list,

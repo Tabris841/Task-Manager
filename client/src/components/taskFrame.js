@@ -2,6 +2,7 @@
 
 var React = require('react');
 var Modal = require('./modal');
+var TaskRow = require('./taskRow');
 
 var TaskFrame = React.createClass({
     getInitialState: function () {
@@ -22,14 +23,8 @@ var TaskFrame = React.createClass({
         });
     },
 
-    deleteTask: function (task, e) {
-        e.preventDefault();
-        var listId = task;
-        console.log(task);
-        this.props.onDeleteTask({id: listId});
-    },
 
-    editTask: function(task, e) {
+    editTask: function (task, e) {
         e.preventDefault();
         var taskName = task;
         if (!listName) {
@@ -37,35 +32,30 @@ var TaskFrame = React.createClass({
         }
         this.props.onTaskSubmit({name: taskName});
     },
-
+    setTask: function (task) {
+        this.setState({
+            value: task.name,
+            showModal: true
+        });
+    },
     render: function () {
-        var listId = this.props.list;
-        var createTask = function (task) {
-            return (
-                <tbody key={task.id}>
-                <tr>
-                    <td className="col-md-1">
-                        <input type="checkbox" className="checkbox"/>
-                    </td>
-                    <td className="col-md-9">{task.name}</td>
-                    <td className="col-md-2">
-                        <button onClick={this.open.bind(this, task.name)}><span className="glyphicon glyphicon-pencil"></span>
-                        </button>
-                        <button onClick={this.deleteTask.bind(this, task.id)}><span
-                            className="glyphicon glyphicon-trash"></span></button>
-                    </td>
-                </tr>
-                </tbody>
-            )
-        };
+        var listId = this.props.list,
+            that = this;
+
         return (
             <div>
                 <table className="table table-hover">
+
+                    <tbody>
                     {this.props.task.filter(function (obj) {
                         return obj.ListId === listId
-                    }).map(createTask, this)}
+                    }).map(function (task) {
+                        return <TaskRow task={task} key={task.id} setTask={that.setTask}/>;
+                    }, this)}
+                    </tbody>
                 </table>
-                <Modal showModal={this.state.showModal} close={this.close} value={this.state.value} handleSubmit={this.editTask}/>
+                <Modal showModal={this.state.showModal} close={this.close} value={this.state.value}
+                       handleSubmit={this.editTask}/>
             </div>
         )
     }

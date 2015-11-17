@@ -23,7 +23,7 @@ var ListFrame = React.createClass({
         });
     },
 
-    editList: function(list, e) {
+    editList: function (list, e) {
         e.preventDefault();
         var listName = list;
         if (!listName) {
@@ -79,7 +79,8 @@ var ListFrame = React.createClass({
         return (
             <div>
                 {this.props.list.map(createList, this)}
-                <Modal showModal={this.state.showModal} close={this.close} value={this.state.value} handleSubmit={this.editList}/>
+                <Modal showModal={this.state.showModal} close={this.close} value={this.state.value}
+                       handleSubmit={this.editList}/>
             </div>
         )
     }

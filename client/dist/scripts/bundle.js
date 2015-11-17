@@ -44023,7 +44023,7 @@ var ListFrame = React.createClass({displayName: "ListFrame",
         });
     },
 
-    editList: function(list, e) {
+    editList: function (list, e) {
         e.preventDefault();
         var listName = list;
         if (!listName) {
@@ -44079,7 +44079,8 @@ var ListFrame = React.createClass({displayName: "ListFrame",
         return (
             React.createElement("div", null, 
                 this.props.list.map(createList, this), 
-                React.createElement(Modal, {showModal: this.state.showModal, close: this.close, value: this.state.value, handleSubmit: this.editList})
+                React.createElement(Modal, {showModal: this.state.showModal, close: this.close, value: this.state.value, 
+                       handleSubmit: this.editList})
             )
         )
     }
@@ -44121,11 +44122,12 @@ var MainPage = React.createClass({displayName: "MainPage",
             return;
         }
         this.handleCreateList({name: listName});
+        this.setState({showModal: false});
     },
 
     handleCreateList: function (list) {
         $.ajax({
-            url: "http://localhost:9002/list",
+            url: "http://localhost:9002/lists",
             dataType: 'json',
             type: 'POST',
             data: list,
@@ -44226,22 +44228,32 @@ var Button = require("react-bootstrap/lib/Button");
 var Input = require("react-bootstrap/lib/Input");
 
 var Modals = React.createClass ({displayName: "Modals",
+    getInitialState: function () {
+        return {
+            value: ''
+        }
+    },
+
+    componentWillReceiveProps: function (newProps) {
+        this.setState({value: newProps.value})
+    },
+
     setValueState: function (e) {
-        return this.props.value = e.target.value
+        this.setState({value: e.target.value})
     },
 
     render: function () {
-        var value = this.props.value;
         return (
             React.createElement(Modal, {show: this.props.showModal, onHide: this.props.close}, 
                 React.createElement(Modal.Header, {closeButton: true}, 
                     React.createElement(Modal.Title, null, "Modal heading")
                 ), 
                 React.createElement(Modal.Body, null, 
-                    React.createElement(Input, {type: "text", placeholder: "Enter text", value: this.props.value, onChange: this.setValueState})
+                    React.createElement(Input, {type: "text", placeholder: "Enter text", value: this.state.value, onChange: this.setValueState})
                 ), 
                 React.createElement(Modal.Footer, null, 
-                    React.createElement(Button, {bsStyle: "primary", onClick: this.props.handleSubmit.bind(null, value)}, "Save"), 
+                    React.createElement(Button, {bsStyle: "primary", 
+                            onClick: this.props.handleSubmit.bind(null, this.state.value)}, "Save"), 
                     React.createElement(Button, {onClick: this.props.close}, "Close")
                 )
             )
@@ -44255,6 +44267,7 @@ module.exports = Modals;
 
 var React = require('react');
 var Modal = require('./modal');
+var TaskRow = require('./taskRow');
 
 var TaskFrame = React.createClass({displayName: "TaskFrame",
     getInitialState: function () {
@@ -44275,14 +44288,8 @@ var TaskFrame = React.createClass({displayName: "TaskFrame",
         });
     },
 
-    deleteTask: function (task, e) {
-        e.preventDefault();
-        var listId = task;
-        console.log(task);
-        this.props.onDeleteTask({id: listId});
-    },
 
-    editTask: function(task, e) {
+    editTask: function (task, e) {
         e.preventDefault();
         var taskName = task;
         if (!listName) {
@@ -44290,35 +44297,30 @@ var TaskFrame = React.createClass({displayName: "TaskFrame",
         }
         this.props.onTaskSubmit({name: taskName});
     },
-
+    setTask: function (task) {
+        this.setState({
+            value: task.name,
+            showModal: true
+        });
+    },
     render: function () {
-        var listId = this.props.list;
-        var createTask = function (task) {
-            return (
-                React.createElement("tbody", {key: task.id}, 
-                React.createElement("tr", null, 
-                    React.createElement("td", {className: "col-md-1"}, 
-                        React.createElement("input", {type: "checkbox", className: "checkbox"})
-                    ), 
-                    React.createElement("td", {className: "col-md-9"}, task.name), 
-                    React.createElement("td", {className: "col-md-2"}, 
-                        React.createElement("button", {onClick: this.open.bind(this, task.name)}, React.createElement("span", {className: "glyphicon glyphicon-pencil"})
-                        ), 
-                        React.createElement("button", {onClick: this.deleteTask.bind(this, task.id)}, React.createElement("span", {
-                            className: "glyphicon glyphicon-trash"}))
-                    )
-                )
-                )
-            )
-        };
+        var listId = this.props.list,
+            that = this;
+
         return (
             React.createElement("div", null, 
                 React.createElement("table", {className: "table table-hover"}, 
+
+                    React.createElement("tbody", null, 
                     this.props.task.filter(function (obj) {
                         return obj.ListId === listId
-                    }).map(createTask, this)
+                    }).map(function (task) {
+                        return React.createElement(TaskRow, {task: task, key: task.id, setTask: that.setTask});
+                    }, this)
+                    )
                 ), 
-                React.createElement(Modal, {showModal: this.state.showModal, close: this.close, value: this.state.value, handleSubmit: this.editTask})
+                React.createElement(Modal, {showModal: this.state.showModal, close: this.close, value: this.state.value, 
+                       handleSubmit: this.editTask})
             )
         )
     }
@@ -44326,7 +44328,46 @@ var TaskFrame = React.createClass({displayName: "TaskFrame",
 
 module.exports = TaskFrame;
 
-},{"./modal":244,"react":239}],246:[function(require,module,exports){
+},{"./modal":244,"./taskRow":246,"react":239}],246:[function(require,module,exports){
+"use strict";
+
+var React = require('react');
+
+var TaskRow = React.createClass({displayName: "TaskRow",
+    propTypes: {
+        task: React.PropTypes.object.isRequired,
+        setTask: React.PropTypes.func.isRequired
+    },
+    editTrigger: function (event) {
+        event.preventDefault();
+        this.props.setTask(this.props.task);
+    },
+    deleteTask: function (task, e) {
+        e.preventDefault();
+        var taskId = task;
+        this.props.onDeleteTask({id: taskId});
+    },
+    render: function () {
+        return (
+            React.createElement("tr", null, 
+                React.createElement("td", {className: "col-md-1"}, 
+                    React.createElement("input", {type: "checkbox", className: "checkbox"})
+                ), 
+                React.createElement("td", {className: "col-md-9"}, this.props.task.name), 
+                React.createElement("td", {className: "col-md-2"}, 
+                    React.createElement("button", {onClick: this.editTrigger}, React.createElement("span", {className: "glyphicon glyphicon-pencil"})
+                    ), 
+                    React.createElement("button", {onClick: this.deleteTask.bind(this, this.props.task.id)}, React.createElement("span", {
+                        className: "glyphicon glyphicon-trash"}))
+                )
+            )
+        )
+    }
+});
+
+module.exports = TaskRow;
+
+},{"react":239}],247:[function(require,module,exports){
 $ = jQuery = require('jquery');
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -44335,4 +44376,4 @@ var MainPage = require('./components/mainPage');
 
 ReactDOM.render(React.createElement(MainPage, null), document.getElementById('app'));
 
-},{"./components/mainPage":243,"jquery":2,"lodash":3,"react":239,"react-dom":83}]},{},[246]);
+},{"./components/mainPage":243,"jquery":2,"lodash":3,"react":239,"react-dom":83}]},{},[247]);

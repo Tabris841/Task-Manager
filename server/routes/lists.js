@@ -45,7 +45,9 @@ router.post('/lists', function (req, res) {
     List.create({
         name: req.body.name
     }).then(function () {
-        res.end();
+        List.findAll().then(function (list) {
+            res.json(list);
+        });
     });
 });
 
