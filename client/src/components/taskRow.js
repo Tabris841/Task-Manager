@@ -1,6 +1,7 @@
 "use strict";
 
 var React = require('react');
+var DateComponent = require('./dateComponent');
 
 var TaskRow = React.createClass({
     propTypes: {
@@ -9,6 +10,7 @@ var TaskRow = React.createClass({
     },
 
     editTrigger: function (event) {
+        console.log(this.props.task);
         event.preventDefault();
         this.props.setTask(this.props.task);
     },
@@ -22,11 +24,12 @@ var TaskRow = React.createClass({
     render: function () {
         return (
             <tr>
-                <td className="col-md-1">
+                <td>
                     <input type="checkbox" className="checkbox"/>
                 </td>
-                <td className="col-md-9">{this.props.task.name}</td>
-                <td className="col-md-2">
+                <td><DateComponent date={this.props.task.createdAt}/></td>
+                <td>{this.props.task.name}</td>
+                <td>
                     <button onClick={this.editTrigger}><span className="glyphicon glyphicon-pencil"></span>
                     </button>
                     <button onClick={this.deleteTask.bind(this, this.props.task.id)}><span

@@ -5,7 +5,7 @@
 
 #app {
   #taskTable {
-    width: 40%;
+    width: 45vw;
     margin: auto;
     margin-top: 10px;
     border-bottom-left-radius: 8px;
@@ -65,20 +65,15 @@
     table {
       tr:hover {
         background-color: #FCFED5;
-        td button .glyphicon-pencil {
-          display: block;
-        }
-        td button .glyphicon-trash {
-          display: block;
-        }
       }
       td {
-        min-height: 3em;
+        min-height: 3vh;
         display: table-cell;
         vertical-align: middle;
       }
       td:first-child {
         border-right: 6px double #F4E8DB;
+        width: 2vw;
         vertical-align: inherit;
         input {
           margin: auto;
@@ -86,10 +81,18 @@
       }
       td:nth-child(2) {
         border-right: 1px solid #ddd;
-        word-wrap: break-word;
+        .customDate {
+          width: 5vw;
+        }
       }
       td:nth-child(3) {
-        padding-left: 3em;
+        width: 32vw;
+        border-right: 1px solid #ddd;
+        word-wrap: break-word;
+      }
+      td:nth-child(4) {
+        width: 6vw;
+        text-align: center;
         color: #979798;
         button {
           border: none;
@@ -103,12 +106,10 @@
           border-right: 1px solid #A0B7D5;
           padding-right: 5px;
           margin-right: 5px;
-          display: none;
         }
         .glyphicon-trash {
           padding-right: 5px;
           margin-right: 5px;
-          display: none;
         }
       }
     }

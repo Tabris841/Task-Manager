@@ -5,7 +5,6 @@ var LisFrame = require('./listFrame');
 var ListApi = require('../api/listApi');
 var TaskApi = require('../api/taskApi');
 var Modal = require('./modal');
-var Example = require('./example');
 
 var MainPage = React.createClass({
     getInitialState: function () {
@@ -103,7 +102,6 @@ var MainPage = React.createClass({
                     &nbsp;&nbsp;
                     Add TODO List
                 </button>
-                <Example />
                 <Modal showModal={this.state.showModal} close={this.close} value={this.state.value}
                        handleSubmit={this.createList}/>
             </div>

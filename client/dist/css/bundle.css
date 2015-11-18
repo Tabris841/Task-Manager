@@ -206,7 +206,7 @@
   padding: 0; }
 
 #app #taskTable {
-  width: 40%;
+  width: 45vw;
   margin: auto;
   margin-top: 10px;
   border-bottom-left-radius: 8px;
@@ -256,40 +256,41 @@
       color: #599273; }
   #app #taskTable table tr:hover {
     background-color: #FCFED5; }
-    #app #taskTable table tr:hover td button .glyphicon-pencil {
-      display: block; }
-    #app #taskTable table tr:hover td button .glyphicon-trash {
-      display: block; }
   #app #taskTable table td {
-    min-height: 3em;
+    min-height: 3vh;
     display: table-cell;
     vertical-align: middle; }
   #app #taskTable table td:first-child {
     border-right: 6px double #F4E8DB;
+    width: 2vw;
     vertical-align: inherit; }
     #app #taskTable table td:first-child input {
       margin: auto; }
   #app #taskTable table td:nth-child(2) {
+    border-right: 1px solid #ddd; }
+    #app #taskTable table td:nth-child(2) .customDate {
+      width: 5vw; }
+  #app #taskTable table td:nth-child(3) {
+    width: 32vw;
     border-right: 1px solid #ddd;
     word-wrap: break-word; }
-  #app #taskTable table td:nth-child(3) {
-    padding-left: 3em;
+  #app #taskTable table td:nth-child(4) {
+    width: 6vw;
+    text-align: center;
     color: #979798; }
-    #app #taskTable table td:nth-child(3) button {
+    #app #taskTable table td:nth-child(4) button {
       border: none;
       background: none; }
-    #app #taskTable table td:nth-child(3) button:focus {
+    #app #taskTable table td:nth-child(4) button:focus {
       outline: none;
       border: none; }
-    #app #taskTable table td:nth-child(3) .glyphicon-pencil {
+    #app #taskTable table td:nth-child(4) .glyphicon-pencil {
       border-right: 1px solid #A0B7D5;
       padding-right: 5px;
-      margin-right: 5px;
-      display: none; }
-    #app #taskTable table td:nth-child(3) .glyphicon-trash {
+      margin-right: 5px; }
+    #app #taskTable table td:nth-child(4) .glyphicon-trash {
       padding-right: 5px;
-      margin-right: 5px;
-      display: none; }
+      margin-right: 5px; }
 
 #app #toDoBtn {
   margin: auto;
