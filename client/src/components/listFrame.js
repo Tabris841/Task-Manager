@@ -36,6 +36,11 @@ var ListFrame = React.createClass({
         this.setState({showModal: false});
     },
 
+    deleteList: function (list, e) {
+        e.preventDefault();
+        this.props.onDeleteList({id: list});
+    },
+
     createTask: function (e) {
         e.preventDefault();
         var form = e.target;
@@ -46,11 +51,6 @@ var ListFrame = React.createClass({
         }
         this.props.onTaskSubmit({name: text, ListId: listId});
         form.querySelector('[name="text"]').value = '';
-    },
-
-    deleteList: function (list, e) {
-        e.preventDefault();
-        this.props.onDeleteList({id: list});
     },
 
     render: function () {

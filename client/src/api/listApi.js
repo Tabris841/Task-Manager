@@ -1,15 +1,24 @@
 var ListApi = {
-    getAllLists: function() {
-        $.ajax({
+    getAllLists: function () {
+        return $.get("http://localhost:9002/lists")
+    },
+    postList: function (list) {
+        return $.post("http://localhost:9002/lists", list)
+    },
+    editList: function (list) {
+        return $.ajax({
             url: "http://localhost:9002/lists",
             dataType: 'json',
-            cache: false,
-            success: function (data) {
-                this.setState({list: data});
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error("http://localhost:9002/lists", status, err.toString());
-            }.bind(this)
+            type: 'PUT',
+            data: list
+        });
+    },
+    deleteList: function (id) {
+        return $.ajax({
+            url: "http://localhost:9002/lists",
+            dataType: 'json',
+            type: 'DELETE',
+            data: id
         });
     }
 };

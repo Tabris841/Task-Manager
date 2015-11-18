@@ -20,8 +20,10 @@
     "gulp-sass": "^2.1.0",
     "jquery": "^2.1.4",
     "lodash": "^3.10.1",
+    "moment": "^2.10.6",
     "react": "^0.14.2",
     "react-bootstrap": "^0.27.3",
+    "react-datepicker": "^0.15.2",
     "react-dom": "^0.14.2",
     "reactify": "^1.1.1",
     "vinyl-source-stream": "^1.1.0"

@@ -34,6 +34,7 @@ var TaskFrame = React.createClass({
         this.props.onEditTask({name: taskName, id: taskId});
         this.setState({showModal: false});
     },
+
     setTask: function (task) {
         this.setState({
             value: task.name,

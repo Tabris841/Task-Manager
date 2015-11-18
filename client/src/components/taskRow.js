@@ -7,15 +7,18 @@ var TaskRow = React.createClass({
         task: React.PropTypes.object.isRequired,
         setTask: React.PropTypes.func.isRequired
     },
+
     editTrigger: function (event) {
         event.preventDefault();
         this.props.setTask(this.props.task);
     },
+
     deleteTask: function (task, e) {
         e.preventDefault();
         var taskId = task;
         this.props.onDeleteTask({id: taskId});
     },
+
     render: function () {
         return (
             <tr>

@@ -5,6 +5,7 @@ var LisFrame = require('./listFrame');
 var ListApi = require('../api/listApi');
 var TaskApi = require('../api/taskApi');
 var Modal = require('./modal');
+var Example = require('./example');
 
 var MainPage = React.createClass({
     getInitialState: function () {
@@ -34,126 +35,58 @@ var MainPage = React.createClass({
         this.setState({showModal: false});
     },
 
-    handleEditList: function (list) {
-        $.ajax({
-            url: "http://localhost:9002/lists",
-            dataType: 'json',
-            type: 'PUT',
-            data: list,
-            success: function (data) {
-                this.setState({list: data});
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error("http://localhost:9002/lists", status, err.toString());
-            }.bind(this)
-        });
-    },
-
-    handleEditTask: function (task) {
-        $.ajax({
-            url: "http://localhost:9002/tasks",
-            dataType: 'json',
-            type: 'PUT',
-            data: task,
-            success: function (data) {
-                this.setState({task: data});
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error("http://localhost:9002/tasks", status, err.toString());
-            }.bind(this)
-        });
-    },
-
     handleCreateList: function (list) {
-        $.ajax({
-            url: "http://localhost:9002/lists",
-            dataType: 'json',
-            type: 'POST',
-            data: list,
-            success: function (data) {
-                this.setState({list: data});
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error("http://localhost:9002/lists", status, err.toString());
-            }.bind(this)
-        });
-    },
-
-    handleDeleteList: function (id) {
-        $.ajax({
-            url: "http://localhost:9002/lists",
-            dataType: 'json',
-            type: 'DELETE',
-            data: id,
-            success: function (data) {
-                this.setState({list: data});
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error("http://localhost:9002/lists", status, err.toString());
-            }.bind(this)
-        });
-    },
-
-    handleDeleteTask: function (id) {
-        $.ajax({
-            url: "http://localhost:9002/tasks",
-            dataType: 'json',
-            type: 'DELETE',
-            data: id,
-            success: function (data) {
-                this.setState({task: data});
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error("http://localhost:9002/tasks", status, err.toString());
-            }.bind(this)
+        var that = this;
+        ListApi.postList(list).then(function (data) {
+            that.setState({list: data})
         });
     },
 
     handleCreateTask: function (task) {
-        $.ajax({
-            url: "http://localhost:9002/tasks",
-            dataType: 'json',
-            type: 'POST',
-            data: task,
-            success: function (data) {
-                this.setState({task: data});
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error("http://localhost:9002/tasks", status, err.toString());
-            }.bind(this)
+        var that = this;
+        TaskApi.postTask(task).then(function (data) {
+            that.setState({task: data})
+        });
+    },
+
+    handleEditList: function (list) {
+        var that = this;
+        ListApi.editList(list).then(function (data) {
+            that.setState({list: data})
+        });
+    },
+
+    handleEditTask: function (task) {
+        var that = this;
+        TaskApi.editTask(task).then(function (data) {
+            that.setState({task: data})
+        });
+    },
+
+    handleDeleteList: function (id) {
+        var that = this;
+        ListApi.deleteList(id).then(function (data) {
+            that.setState({list: data})
+        });
+    },
+
+    handleDeleteTask: function (id) {
+        var that = this;
+        TaskApi.deleteTask(id).then(function (data) {
+            that.setState({task: data})
         });
     },
 
     componentDidMount: function () {
+        var that = this;
         if (this.isMounted()) {
-            $.ajax({
-                url: "http://localhost:9002/lists",
-                dataType: 'json',
-                cache: false,
-                success: function (data) {
-                    this.setState({list: data});
-                }.bind(this),
-                error: function (xhr, status, err) {
-                    console.error("http://localhost:9002/lists", status, err.toString());
-                }.bind(this)
+            ListApi.getAllLists().then(function (data) {
+                that.setState({list: data})
             });
-
-            $.ajax({
-                url: "http://localhost:9002/tasks",
-                dataType: 'json',
-                cache: false,
-                success: function (data) {
-                    this.setState({task: data});
-                }.bind(this),
-                error: function (xhr, status, err) {
-                    console.error("http://localhost:9002/tasks", status, err.toString());
-                }.bind(this)
-            });
+            TaskApi.getAllTask().then(function (data) {
+                that.setState({task: data})
+            })
         }
-    },
-
-    setListState: function (event) {
-        return this.setState({name: event.target.value})
     },
 
     render: function () {
@@ -170,6 +103,7 @@ var MainPage = React.createClass({
                     &nbsp;&nbsp;
                     Add TODO List
                 </button>
+                <Example />
                 <Modal showModal={this.state.showModal} close={this.close} value={this.state.value}
                        handleSubmit={this.createList}/>
             </div>

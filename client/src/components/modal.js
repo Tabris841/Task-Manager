@@ -31,7 +31,7 @@ var Modals = React.createClass ({
                     <Modal.Title>Modal heading</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Input type="text" placeholder="Enter text" value={this.state.value} onChange={this.setValueState}/>
+                    <Input type="textarea"  placeholder="Enter text" value={this.state.value} onChange={this.setValueState}/>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button bsStyle="primary"
