@@ -21,7 +21,7 @@ var Modals = React.createClass ({
     },
 
     render: function () {
-        var test = {
+        var data = {
             value: this.state.value,
             id: this.props.id
         };
@@ -35,7 +35,7 @@ var Modals = React.createClass ({
                 </Modal.Body>
                 <Modal.Footer>
                     <Button bsStyle="primary"
-                            onClick={this.props.handleSubmit.bind(null, test)}>Save</Button>
+                            onClick={this.props.handleSubmit.bind(null, data)}>Save</Button>
                     <Button onClick={this.props.close}>Close</Button>
                 </Modal.Footer>
             </Modal>

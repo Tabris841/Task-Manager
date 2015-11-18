@@ -1,19 +1,9 @@
 var express = require('express'),
     router = express.Router(),
-    Sequelize = require('sequelize'),
     List = require('../models/listModel'),
-    Task = require('../models/taskModel'),
-    db = new Sequelize('ToDoList', null, null, {
-        host: 'localhost',
-        dialect: 'sqlite',
-        storage: './database/ToDoList.sqlite3'
-    });
-
+    Task = require('../models/taskModel');
 
 router.get('/lists', function (req, res, err) {
-    var ListItems = [];
-    var Tasks = [];
-
     List.findAll().then(function (list) {
         res.json(list);
     });

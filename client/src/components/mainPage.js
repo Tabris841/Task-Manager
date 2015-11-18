@@ -49,6 +49,21 @@ var MainPage = React.createClass({
         });
     },
 
+    handleEditTask: function (task) {
+        $.ajax({
+            url: "http://localhost:9002/tasks",
+            dataType: 'json',
+            type: 'PUT',
+            data: task,
+            success: function (data) {
+                this.setState({task: data});
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error("http://localhost:9002/tasks", status, err.toString());
+            }.bind(this)
+        });
+    },
+
     handleCreateList: function (list) {
         $.ajax({
             url: "http://localhost:9002/lists",
@@ -148,6 +163,7 @@ var MainPage = React.createClass({
                           onTaskSubmit={this.handleCreateTask}
                           onDeleteList={this.handleDeleteList}
                           onEditList={this.handleEditList}
+                          onEditTask={this.handleEditTask}
                           onDeleteTask={this.handleDeleteTask}/>
                 <button type="button" className="btn btn-primary" id="toDoBtn" onClick={this.open}>
                     <span className="glyphicon glyphicon-plus"></span>

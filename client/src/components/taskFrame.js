@@ -8,6 +8,7 @@ var TaskFrame = React.createClass({
     getInitialState: function () {
         return {
             value: "",
+            id: "",
             showModal: false
         };
     },
@@ -23,18 +24,20 @@ var TaskFrame = React.createClass({
         });
     },
 
-
     editTask: function (task, e) {
         e.preventDefault();
-        var taskName = task;
-        if (!listName) {
+        var taskName = task.value;
+        var taskId = task.id;
+        if (!taskName) {
             return;
         }
-        this.props.onTaskSubmit({name: taskName});
+        this.props.onEditTask({name: taskName, id: taskId});
+        this.setState({showModal: false});
     },
     setTask: function (task) {
         this.setState({
             value: task.name,
+            id: task.id,
             showModal: true
         });
     },
@@ -45,7 +48,6 @@ var TaskFrame = React.createClass({
         return (
             <div>
                 <table className="table table-hover">
-
                     <tbody>
                     {this.props.task.filter(function (obj) {
                         return obj.ListId === listId
@@ -55,7 +57,7 @@ var TaskFrame = React.createClass({
                     }, this)}
                     </tbody>
                 </table>
-                <Modal showModal={this.state.showModal} close={this.close} value={this.state.value}
+                <Modal showModal={this.state.showModal} close={this.close} value={this.state.value} id={this.state.id}
                        handleSubmit={this.editTask}/>
             </div>
         )

@@ -27,12 +27,13 @@ var ListFrame = React.createClass({
 
     editList: function (list, e) {
         e.preventDefault();
-        var listName = list.name;
+        var listName = list.value;
         var listId = list.id;
         if (!listName) {
             return;
         }
         this.props.onEditList({name: listName, id: listId});
+        this.setState({showModal: false});
     },
 
     createTask: function (e) {
@@ -79,7 +80,9 @@ var ListFrame = React.createClass({
                         </div>
                     </form>
                     <div>
-                        <TaskFrame task={this.props.task} list={list.id} onDeleteTask={this.props.onDeleteTask}/>
+                        <TaskFrame task={this.props.task} list={list.id}
+                                   onDeleteTask={this.props.onDeleteTask}
+                                   onEditTask={this.props.onEditTask}/>
                     </div>
                 </div>
             )

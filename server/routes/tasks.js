@@ -23,15 +23,17 @@ router.post('/tasks', function(req, res) {
 router.put('/tasks', function(req, res) {
 	Task.update({
 		name: req.body.name,
-		deadline: req.body.deadline,
-		done: req.body.done,
-		ListId: req.body.ListId
+		deadline: req.body.deadline
+		//done: req.body.done,
+		//ListId: req.body.ListId
 	}, {
 		where: {
 			id: req.body.id
 		}
 	}).then(function() {
-		res.end();
+		Task.findAll().then(function(task) {
+			res.json(task);
+		});
 	});
 });
 

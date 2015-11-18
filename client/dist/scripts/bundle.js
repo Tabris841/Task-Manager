@@ -43980,7 +43980,17 @@ module.exports = require('./lib/React');
 },{"./lib/React":107}],240:[function(require,module,exports){
 var ListApi = {
     getAllLists: function() {
-        return $.get("http://localhost:9002/lists")
+        $.ajax({
+            url: "http://localhost:9002/lists",
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                this.setState({list: data});
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error("http://localhost:9002/lists", status, err.toString());
+            }.bind(this)
+        });
     }
 };
 
@@ -44027,12 +44037,13 @@ var ListFrame = React.createClass({displayName: "ListFrame",
 
     editList: function (list, e) {
         e.preventDefault();
-        var listName = list.name;
+        var listName = list.value;
         var listId = list.id;
         if (!listName) {
             return;
         }
         this.props.onEditList({name: listName, id: listId});
+        this.setState({showModal: false});
     },
 
     createTask: function (e) {
@@ -44079,7 +44090,9 @@ var ListFrame = React.createClass({displayName: "ListFrame",
                         )
                     ), 
                     React.createElement("div", null, 
-                        React.createElement(TaskFrame, {task: this.props.task, list: list.id, onDeleteTask: this.props.onDeleteTask})
+                        React.createElement(TaskFrame, {task: this.props.task, list: list.id, 
+                                   onDeleteTask: this.props.onDeleteTask, 
+                                   onEditTask: this.props.onEditTask})
                     )
                 )
             )
@@ -44143,6 +44156,21 @@ var MainPage = React.createClass({displayName: "MainPage",
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error("http://localhost:9002/lists", status, err.toString());
+            }.bind(this)
+        });
+    },
+
+    handleEditTask: function (task) {
+        $.ajax({
+            url: "http://localhost:9002/tasks",
+            dataType: 'json',
+            type: 'PUT',
+            data: task,
+            success: function (data) {
+                this.setState({task: data});
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error("http://localhost:9002/tasks", status, err.toString());
             }.bind(this)
         });
     },
@@ -44246,6 +44274,7 @@ var MainPage = React.createClass({displayName: "MainPage",
                           onTaskSubmit: this.handleCreateTask, 
                           onDeleteList: this.handleDeleteList, 
                           onEditList: this.handleEditList, 
+                          onEditTask: this.handleEditTask, 
                           onDeleteTask: this.handleDeleteTask}), 
                 React.createElement("button", {type: "button", className: "btn btn-primary", id: "toDoBtn", onClick: this.open}, 
                     React.createElement("span", {className: "glyphicon glyphicon-plus"}), 
@@ -44284,7 +44313,7 @@ var Modals = React.createClass ({displayName: "Modals",
     },
 
     render: function () {
-        var test = {
+        var data = {
             value: this.state.value,
             id: this.props.id
         };
@@ -44298,7 +44327,7 @@ var Modals = React.createClass ({displayName: "Modals",
                 ), 
                 React.createElement(Modal.Footer, null, 
                     React.createElement(Button, {bsStyle: "primary", 
-                            onClick: this.props.handleSubmit.bind(null, test)}, "Save"), 
+                            onClick: this.props.handleSubmit.bind(null, data)}, "Save"), 
                     React.createElement(Button, {onClick: this.props.close}, "Close")
                 )
             )
@@ -44318,6 +44347,7 @@ var TaskFrame = React.createClass({displayName: "TaskFrame",
     getInitialState: function () {
         return {
             value: "",
+            id: "",
             showModal: false
         };
     },
@@ -44333,18 +44363,20 @@ var TaskFrame = React.createClass({displayName: "TaskFrame",
         });
     },
 
-
     editTask: function (task, e) {
         e.preventDefault();
-        var taskName = task;
-        if (!listName) {
+        var taskName = task.value;
+        var taskId = task.id;
+        if (!taskName) {
             return;
         }
-        this.props.onTaskSubmit({name: taskName});
+        this.props.onEditTask({name: taskName, id: taskId});
+        this.setState({showModal: false});
     },
     setTask: function (task) {
         this.setState({
             value: task.name,
+            id: task.id,
             showModal: true
         });
     },
@@ -44355,7 +44387,6 @@ var TaskFrame = React.createClass({displayName: "TaskFrame",
         return (
             React.createElement("div", null, 
                 React.createElement("table", {className: "table table-hover"}, 
-
                     React.createElement("tbody", null, 
                     this.props.task.filter(function (obj) {
                         return obj.ListId === listId
@@ -44365,7 +44396,7 @@ var TaskFrame = React.createClass({displayName: "TaskFrame",
                     }, this)
                     )
                 ), 
-                React.createElement(Modal, {showModal: this.state.showModal, close: this.close, value: this.state.value, 
+                React.createElement(Modal, {showModal: this.state.showModal, close: this.close, value: this.state.value, id: this.state.id, 
                        handleSubmit: this.editTask})
             )
         )
