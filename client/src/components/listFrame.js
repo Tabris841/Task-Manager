@@ -3,6 +3,9 @@
 var React = require('react');
 var TaskFrame = require('./taskFrame');
 var Modal = require('./modal');
+import mui from 'material-ui';
+
+var {AppBar, IconButton, RaisedButton} = mui;
 
 var ListFrame = React.createClass({
     getInitialState: function () {
@@ -57,27 +60,19 @@ var ListFrame = React.createClass({
         var createList = function (list) {
             return (
                 <div id="taskTable" key={list.id}>
-                    <div id="taskHeader">
-                        <span className="glyphicon glyphicon-calendar"></span>
-                        <h4>{list.name}</h4>
-                        <button className="pull-right" onClick={this.deleteList.bind(this, [list.name, list.id])}>
-                            <span className="glyphicon glyphicon-trash"></span>
-                        </button>
-                        &nbsp;&nbsp;
-                        <button className="pull-right" onClick={this.open.bind(this, list.name, list.id)}>
-                            <span className="glyphicon glyphicon-pencil"></span>
-                        </button>
-                    </div>
+                    <AppBar title={list.name} iconElementRight={
+                        <div>
+                            <IconButton iconClassName="material-icons" tooltipPosition="bottom-center"
+                                        onClick={this.open.bind(this, list.name, list.id)}
+                                        tooltip="Edit"><span className="white">border_color</span></IconButton>
+                            <IconButton iconClassName="material-icons" tooltipPosition="bottom-center"
+                                        onClick={this.deleteList.bind(this, [list.name, list.id])}
+                                        tooltip="Delete"><span className="white">delete</span></IconButton>
+                        </div>}/>
                     <form id="taskNav" onSubmit={this.createTask} name={list.id}>
                         <span className="glyphicon glyphicon-plus"></span>
-
-                        <div className="input-group">
-                            <input type="text" className="form-control" name="text"
-                                   placeholder="Start typing here to create a task..."/>
-                            <span className="input-group-btn">
-                                <input type="submit" className="btn btn-success" value="Add task"/>
-                            </span>
-                        </div>
+                        <input className="inputForm form-control"type="text" name="text" placeholder="Start typing here to create a task..."/>
+                        <RaisedButton type="submit" label="Add task" secondary={true}/>
                     </form>
                     <div>
                         <TaskFrame task={this.props.task} list={list.id}
@@ -98,3 +93,11 @@ var ListFrame = React.createClass({
 });
 
 module.exports = ListFrame;
+
+//<button className="pull-right" >
+//    <span className="glyphicon glyphicon-trash"></span>
+//</button>
+//&nbsp;&nbsp;
+//<button className="pull-right" onClick={this.open.bind(this, list.name, list.id)}>
+//    <span className="glyphicon glyphicon-pencil"></span>
+//</button>

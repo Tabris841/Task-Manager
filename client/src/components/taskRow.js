@@ -2,6 +2,9 @@
 
 var React = require('react');
 var DateComponent = require('./dateComponent');
+import mui from 'material-ui';
+
+var {TableRow, TableRowColumn, Checkbox, IconButton} = mui;
 
 var TaskRow = React.createClass({
     propTypes: {
@@ -23,21 +26,24 @@ var TaskRow = React.createClass({
 
     render: function () {
         return (
-            <tr>
-                <td>
-                    <input type="checkbox" className="checkbox"/>
-                </td>
-                <td><DateComponent date={this.props.task.createdAt}/></td>
-                <td>{this.props.task.name}</td>
-                <td>
-                    <button onClick={this.editTrigger}><span className="glyphicon glyphicon-pencil"></span>
-                    </button>
-                    <button onClick={this.deleteTask.bind(this, this.props.task.id)}><span
-                        className="glyphicon glyphicon-trash"></span></button>
-                </td>
-            </tr>
+            <TableRow>
+                <TableRowColumn>
+                    <Checkbox/>
+                </TableRowColumn>
+                <TableRowColumn><DateComponent date={this.props.task.createdAt}/></TableRowColumn>
+                <TableRowColumn>{this.props.task.name}</TableRowColumn>
+                <TableRowColumn>
+                    <IconButton iconClassName="material-icons" tooltipPosition="bottom-center"
+                                onClick={this.editTrigger}
+                                tooltip="Edit"><span className="grey">border_color</span></IconButton>
+                    <IconButton iconClassName="material-icons" tooltipPosition="bottom-center"
+                                onClick={this.deleteTask.bind(this, this.props.task.id)}
+                                tooltip="Delete"><span className="grey">delete</span></IconButton>
+                </TableRowColumn>
+            </TableRow>
         )
     }
 });
 
 module.exports = TaskRow;
+

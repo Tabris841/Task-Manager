@@ -3,6 +3,9 @@
 var React = require('react');
 var Modal = require('./modal');
 var TaskRow = require('./taskRow');
+import mui from 'material-ui';
+
+var {Table, TableBody, TableHeader, TableRow, TableHeaderColumn} = mui;
 
 var TaskFrame = React.createClass({
     getInitialState: function () {
@@ -48,16 +51,24 @@ var TaskFrame = React.createClass({
 
         return (
             <div>
-                <table className="table table-hover">
-                    <tbody>
+                <Table>
+                    <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+                        <TableRow>
+                            <TableHeaderColumn>Done</TableHeaderColumn>
+                            <TableHeaderColumn>Deadline</TableHeaderColumn>
+                            <TableHeaderColumn>Task</TableHeaderColumn>
+                            <TableHeaderColumn>Actions</TableHeaderColumn>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
                     {this.props.task.filter(function (obj) {
                         return obj.ListId === listId
                     }).map(function (task) {
                         return <TaskRow task={task} key={task.id} setTask={that.setTask}
                                         onDeleteTask={this.props.onDeleteTask}/>;
                     }, this)}
-                    </tbody>
-                </table>
+                    </TableBody>
+                </Table>
                 <Modal showModal={this.state.showModal} close={this.close} value={this.state.value} id={this.state.id}
                        handleSubmit={this.editTask}/>
             </div>

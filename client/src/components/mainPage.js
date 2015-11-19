@@ -5,6 +5,9 @@ var LisFrame = require('./listFrame');
 var ListApi = require('../api/listApi');
 var TaskApi = require('../api/taskApi');
 var Modal = require('./modal');
+import mui from 'material-ui';
+
+var {RaisedButton} = mui;
 
 var MainPage = React.createClass({
     getInitialState: function () {
@@ -97,11 +100,10 @@ var MainPage = React.createClass({
                           onEditList={this.handleEditList}
                           onEditTask={this.handleEditTask}
                           onDeleteTask={this.handleDeleteTask}/>
-                <button type="button" className="btn btn-primary" id="toDoBtn" onClick={this.open}>
-                    <span className="glyphicon glyphicon-plus"></span>
-                    &nbsp;&nbsp;
-                    Add TODO List
-                </button>
+                <div id="toDoBtn">
+                    <RaisedButton id="toDoBtn" secondary={true} onClick={this.open} label="Add TODO List">
+                    </RaisedButton>
+                </div>
                 <Modal showModal={this.state.showModal} close={this.close} value={this.state.value}
                        handleSubmit={this.createList}/>
             </div>

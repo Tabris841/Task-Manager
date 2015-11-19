@@ -6,6 +6,7 @@ var open = require('gulp-open'); // Open a URL in a web browser
 var browserify = require('browserify'); // Bundles JS
 var reactify = require('reactify'); // Transforms React JSX to JS
 var source = require('vinyl-source-stream'); // Use conventional text streams with Gulp
+var babelify = require("babelify");
 var concat = require('gulp-concat');
 var lint = require('gulp-eslint'); // Lint JS files, including JSX
 var sass = require('gulp-sass');
@@ -70,6 +71,7 @@ gulp.task('css', function() {
 
 gulp.task('js', function() {
     browserify(config.paths.mainJs)
+        .transform(babelify, {presets: ["es2015", "react"]})
         .transform(reactify)
         .bundle()
         .on('error', console.error.bind(console))
