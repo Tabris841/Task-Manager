@@ -35,7 +35,7 @@ var TaskRow = React.createClass({
                 <TableRowColumn>
                     <IconButton iconClassName="material-icons" tooltipPosition="bottom-center"
                                 onClick={this.editTrigger}
-                                tooltip="Edit"><span className="grey">border_color</span></IconButton>
+                                tooltip="Edit"><span className="grey">edit</span></IconButton>
                     <IconButton iconClassName="material-icons" tooltipPosition="bottom-center"
                                 onClick={this.deleteTask.bind(this, this.props.task.id)}
                                 tooltip="Delete"><span className="grey">delete</span></IconButton>

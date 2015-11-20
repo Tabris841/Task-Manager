@@ -60,15 +60,19 @@ var ListFrame = React.createClass({
         var createList = function (list) {
             return (
                 <div id="taskTable" key={list.id}>
-                    <AppBar title={list.name} iconElementRight={
-                        <div>
-                            <IconButton iconClassName="material-icons" tooltipPosition="bottom-center"
-                                        onClick={this.open.bind(this, list.name, list.id)}
-                                        tooltip="Edit"><span className="white">border_color</span></IconButton>
-                            <IconButton iconClassName="material-icons" tooltipPosition="bottom-center"
-                                        onClick={this.deleteList.bind(this, [list.name, list.id])}
-                                        tooltip="Delete"><span className="white">delete</span></IconButton>
-                        </div>}/>
+                    <AppBar title={list.name}
+                            iconElementLeft={
+                                <IconButton iconClassName="material-icons" tooltipPosition="bottom-center"
+                                                tooltip="List"><span className="white">date_range</span></IconButton>}
+                            iconElementRight={
+                                <div>
+                                    <IconButton iconClassName="material-icons" tooltipPosition="bottom-center"
+                                                onClick={this.open.bind(this, list.name, list.id)}
+                                                tooltip="Edit"><span className="white">edit</span></IconButton>
+                                    <IconButton iconClassName="material-icons" tooltipPosition="bottom-center"
+                                                onClick={this.deleteList.bind(this, [list.name, list.id])}
+                                                tooltip="Delete"><span className="white">delete</span></IconButton>
+                                </div>}/>
                     <form id="taskNav" onSubmit={this.createTask} name={list.id}>
                         <span className="glyphicon glyphicon-plus"></span>
                         <input className="inputForm form-control"type="text" name="text" placeholder="Start typing here to create a task..."/>

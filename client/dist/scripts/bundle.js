@@ -67121,7 +67121,18 @@ var ListFrame = React.createClass({
             return React.createElement(
                 'div',
                 { id: 'taskTable', key: list.id },
-                React.createElement(AppBar, { title: list.name, iconElementRight: React.createElement(
+                React.createElement(AppBar, { title: list.name,
+                    iconElementLeft: React.createElement(
+                        IconButton,
+                        { iconClassName: 'material-icons', tooltipPosition: 'bottom-center',
+                            tooltip: 'List' },
+                        React.createElement(
+                            'span',
+                            { className: 'white' },
+                            'date_range'
+                        )
+                    ),
+                    iconElementRight: React.createElement(
                         'div',
                         null,
                         React.createElement(
@@ -67132,7 +67143,7 @@ var ListFrame = React.createClass({
                             React.createElement(
                                 'span',
                                 { className: 'white' },
-                                'border_color'
+                                'edit'
                             )
                         ),
                         React.createElement(
@@ -67557,7 +67568,7 @@ var TaskRow = React.createClass({
                     React.createElement(
                         'span',
                         { className: 'grey' },
-                        'border_color'
+                        'edit'
                     )
                 ),
                 React.createElement(
