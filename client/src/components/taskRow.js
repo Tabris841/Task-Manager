@@ -33,12 +33,10 @@ var TaskRow = React.createClass({
                 <TableRowColumn><DateComponent date={this.props.task.createdAt}/></TableRowColumn>
                 <TableRowColumn>{this.props.task.name}</TableRowColumn>
                 <TableRowColumn>
-                    <IconButton iconClassName="material-icons" tooltipPosition="bottom-center"
-                                onClick={this.editTrigger}
-                                tooltip="Edit"><span className="grey">edit</span></IconButton>
-                    <IconButton iconClassName="material-icons" tooltipPosition="bottom-center"
-                                onClick={this.deleteTask.bind(this, this.props.task.id)}
-                                tooltip="Delete"><span className="grey">delete</span></IconButton>
+                    <IconButton iconClassName="material-icons" onClick={this.editTrigger}><span
+                        className="grey">edit</span></IconButton>
+                    <IconButton iconClassName="material-icons" onClick={this.deleteTask.bind(this, this.props.task.id)} ><span
+                        className="grey">delete</span></IconButton>
                 </TableRowColumn>
             </TableRow>
         )

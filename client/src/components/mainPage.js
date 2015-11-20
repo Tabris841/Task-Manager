@@ -2,21 +2,38 @@
 
 var React = require('react');
 var LisFrame = require('./listFrame');
+var Modal = require('./modal');
+var ListActions = require('../actions/listActions');
+var ListStore = require('../stores/listStore');
+var TaskStore = require('../stores/taskStore');
 var ListApi = require('../api/listApi');
 var TaskApi = require('../api/taskApi');
-var Modal = require('./modal');
-import mui from 'material-ui';
 
+import mui from 'material-ui';
 var {RaisedButton} = mui;
 
 var MainPage = React.createClass({
     getInitialState: function () {
         return {
-            list: [],
-            task: [],
+            list: ListStore.getAllLists(),
+            task: TaskStore.getAllTasks(),
             showModal: false,
             value: ''
         };
+    },
+
+    componentDidMount: function () {
+        ListStore.addChangeListener(this._onChange);
+        TaskStore.addChangeListener(this._onChange);
+    },
+
+    componentWillUnmount: function () {
+        ListStore.removeChangeListener(this._onChange);
+        TaskStore.removeChangeListener(this._onChange);
+    },
+
+    _onChange: function () {
+        this.setState({list: ListStore.getAllLists(), task: TaskStore.getAllTasks()});
     },
 
     close() {
@@ -77,18 +94,6 @@ var MainPage = React.createClass({
         TaskApi.deleteTask(id).then(function (data) {
             that.setState({task: data})
         });
-    },
-
-    componentDidMount: function () {
-        var that = this;
-        if (this.isMounted()) {
-            ListApi.getAllLists().then(function (data) {
-                that.setState({list: data})
-            });
-            TaskApi.getAllTask().then(function (data) {
-                that.setState({task: data})
-            })
-        }
     },
 
     render: function () {
