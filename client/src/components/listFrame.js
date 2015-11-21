@@ -2,7 +2,9 @@
 
 var React = require('react');
 var TaskFrame = require('./taskFrame');
+var ListActions = require('../actions/listActions');
 var Modal = require('./modal');
+var TaskActions =require('../actions/taskActions');
 import mui from 'material-ui';
 
 var {AppBar, IconButton, RaisedButton} = mui;
@@ -35,13 +37,13 @@ var ListFrame = React.createClass({
         if (!listName) {
             return;
         }
-        this.props.onEditList({name: listName, id: listId});
+        ListActions.editList({name: listName, id: listId});
         this.setState({showModal: false});
     },
 
     deleteList: function (list, e) {
         e.preventDefault();
-        this.props.onDeleteList({id: list});
+        ListActions.deleteList({id: list});
     },
 
     createTask: function (e) {
@@ -52,7 +54,7 @@ var ListFrame = React.createClass({
         if (!text) {
             return;
         }
-        this.props.onTaskSubmit({name: text, ListId: listId});
+        TaskActions.createTask({name: text, ListId: listId});
         form.querySelector('[name="text"]').value = '';
     },
 
@@ -79,9 +81,7 @@ var ListFrame = React.createClass({
                         <RaisedButton type="submit" label="Add task" secondary={true}/>
                     </form>
                     <div>
-                        <TaskFrame task={this.props.task} list={list.id}
-                                   onDeleteTask={this.props.onDeleteTask}
-                                   onEditTask={this.props.onEditTask}/>
+                        <TaskFrame task={this.props.task} list={list.id}/>
                     </div>
                 </div>
             )

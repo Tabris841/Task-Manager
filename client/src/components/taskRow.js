@@ -2,6 +2,7 @@
 
 var React = require('react');
 var DateComponent = require('./dateComponent');
+var TaskActions =require('../actions/taskActions');
 import mui from 'material-ui';
 
 var {TableRow, TableRowColumn, Checkbox, IconButton} = mui;
@@ -13,15 +14,13 @@ var TaskRow = React.createClass({
     },
 
     editTrigger: function (event) {
-        console.log(this.props.task);
         event.preventDefault();
         this.props.setTask(this.props.task);
     },
 
     deleteTask: function (task, e) {
         e.preventDefault();
-        var taskId = task;
-        this.props.onDeleteTask({id: taskId});
+        TaskActions.deleteTask({id: task});
     },
 
     render: function () {

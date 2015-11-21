@@ -33,25 +33,19 @@ var TaskStore = Object.assign({}, EventEmmit.prototype, {
 Dispatcher.register(function (action) {
     switch (action.actionType) {
         case ActionTypes.INITIALIZE:
-            action.initialData.task.then(function (data) {
-                _tasks = data;
-            });
+            _tasks = action.initialData.task;
             TaskStore.emitChange();
             break;
         case ActionTypes.CREATE_TASK:
-            _tasks.push(action.task);
+            _tasks = action.task
             TaskStore.emitChange();
             break;
         case ActionTypes.UPDATE_TASK:
-            var existingTask = _.find(_task, {id: action.task.id});
-            var existingTaskIndex = _.indexOf(_tasks, existingTask);
-            _list.splice(existingTaskIndex, 1, action.task);
+            _tasks = action.task
             TaskStore.emitChange();
             break;
         case ActionTypes.DELETE_TASK:
-            _.remove(_tasks, function(task) {
-                return task.id === task.id;
-            });
+            _tasks = action.task
             TaskStore.emitChange();
             break;
     }

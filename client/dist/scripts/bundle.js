@@ -67561,13 +67561,17 @@ var TaskApi = require('../api/taskApi');
 var ListApi = require('../api/listApi');
 
 var InitializeActions = {
-    initApp: function initApp() {
-        Dispatcher.dispatch({
-            actionType: ActionTypes.INITIALIZE,
-            initialData: {
-                list: ListApi.getAllLists(),
-                task: TaskApi.getAllTask()
-            }
+    initData: function initData() {
+        ListApi.getAllLists().then(function (list) {
+            TaskApi.getAllTasks().then(function (task) {
+                Dispatcher.dispatch({
+                    actionType: ActionTypes.INITIALIZE,
+                    initialData: {
+                        list: list,
+                        task: task
+                    }
+                });
+            });
         });
     }
 };
@@ -67575,7 +67579,7 @@ var InitializeActions = {
 module.exports = InitializeActions;
 
 
-},{"../api/listApi":421,"../api/taskApi":422,"../constants/actionTypes":429,"../dispatcher/appDispatcher":430}],420:[function(require,module,exports){
+},{"../api/listApi":422,"../api/taskApi":423,"../constants/actionTypes":430,"../dispatcher/appDispatcher":431}],420:[function(require,module,exports){
 "use strict";
 
 var Dispatcher = require('../dispatcher/appDispatcher');
@@ -67584,21 +67588,71 @@ var ActionTypes = require('../constants/actionTypes');
 
 var ListActions = {
     createList: function createList(list) {
-        var that = this;
-        var newList = ListApi.editList(list).then(function (data) {
-            that.setState({ list: data });
+        ListApi.postList(list).then(function (data) {
+            Dispatcher.dispatch({
+                actionType: ActionTypes.CREATE_LIST,
+                list: data
+            });
         });
-
-        Dispatcher.dispatch({
-            actionType: ActionTypes.CREATE_LIST,
-            author: newList
+    },
+    editList: function editList(list) {
+        ListApi.editList(list).then(function (data) {
+            Dispatcher.dispatch({
+                actionType: ActionTypes.UPDATE_LIST,
+                list: data
+            });
+        });
+    },
+    deleteList: function deleteList(id) {
+        ListApi.deleteList(id).then(function (data) {
+            Dispatcher.dispatch({
+                actionType: ActionTypes.DELETE_LIST,
+                list: data
+            });
         });
     }
 };
 module.exports = ListActions;
 
 
-},{"../api/listApi":421,"../constants/actionTypes":429,"../dispatcher/appDispatcher":430}],421:[function(require,module,exports){
+},{"../api/listApi":422,"../constants/actionTypes":430,"../dispatcher/appDispatcher":431}],421:[function(require,module,exports){
+"use strict";
+
+var Dispatcher = require('../dispatcher/appDispatcher');
+var TaskApi = require('../api/taskApi');
+var ActionTypes = require('../constants/actionTypes');
+
+var TaskActions = {
+    createTask: function createTask(task) {
+        TaskApi.postTask(task).then(function (data) {
+            Dispatcher.dispatch({
+                actionType: ActionTypes.CREATE_TASK,
+                task: data
+            });
+        });
+    },
+    editTask: function editTask(task) {
+        TaskApi.editTask(task).then(function (data) {
+            Dispatcher.dispatch({
+                actionType: ActionTypes.UPDATE_TASK,
+                task: data
+            });
+        });
+    },
+    deleteTask: function deleteTask(id) {
+        TaskApi.deleteTask(id).then(function (data) {
+            Dispatcher.dispatch({
+                actionType: ActionTypes.DELETE_TASK,
+                task: data
+            });
+        });
+    }
+};
+
+module.exports = TaskActions;
+
+
+},{"../api/taskApi":423,"../constants/actionTypes":430,"../dispatcher/appDispatcher":431}],422:[function(require,module,exports){
 "use strict";
 
 var ListApi = {
@@ -67629,11 +67683,11 @@ var ListApi = {
 module.exports = ListApi;
 
 
-},{}],422:[function(require,module,exports){
+},{}],423:[function(require,module,exports){
 "use strict";
 
 var TaskApi = {
-    getAllTask: function getAllTask() {
+    getAllTasks: function getAllTasks() {
         return $.get("http://localhost:9002/tasks");
     },
     postTask: function postTask(task) {
@@ -67660,7 +67714,7 @@ var TaskApi = {
 module.exports = TaskApi;
 
 
-},{}],423:[function(require,module,exports){
+},{}],424:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -67694,7 +67748,7 @@ var DateComponent = React.createClass({
 module.exports = DateComponent;
 
 
-},{"material-ui/lib/date-picker/date-picker":31,"material-ui/lib/date-picker/date-picker-dialog":29,"react":418}],424:[function(require,module,exports){
+},{"material-ui/lib/date-picker/date-picker":31,"material-ui/lib/date-picker/date-picker-dialog":29,"react":418}],425:[function(require,module,exports){
 "use strict";
 
 var _materialUi = require('material-ui');
@@ -67705,7 +67759,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var React = require('react');
 var TaskFrame = require('./taskFrame');
+var ListActions = require('../actions/listActions');
 var Modal = require('./modal');
+var TaskActions = require('../actions/taskActions');
 var AppBar = _materialUi2.default.AppBar;
 var IconButton = _materialUi2.default.IconButton;
 var RaisedButton = _materialUi2.default.RaisedButton;
@@ -67739,13 +67795,13 @@ var ListFrame = React.createClass({
         if (!listName) {
             return;
         }
-        this.props.onEditList({ name: listName, id: listId });
+        ListActions.editList({ name: listName, id: listId });
         this.setState({ showModal: false });
     },
 
     deleteList: function deleteList(list, e) {
         e.preventDefault();
-        this.props.onDeleteList({ id: list });
+        ListActions.deleteList({ id: list });
     },
 
     createTask: function createTask(e) {
@@ -67756,7 +67812,7 @@ var ListFrame = React.createClass({
         if (!text) {
             return;
         }
-        this.props.onTaskSubmit({ name: text, ListId: listId });
+        TaskActions.createTask({ name: text, ListId: listId });
         form.querySelector('[name="text"]').value = '';
     },
 
@@ -67812,9 +67868,7 @@ var ListFrame = React.createClass({
                 React.createElement(
                     'div',
                     null,
-                    React.createElement(TaskFrame, { task: this.props.task, list: list.id,
-                        onDeleteTask: this.props.onDeleteTask,
-                        onEditTask: this.props.onEditTask })
+                    React.createElement(TaskFrame, { task: this.props.task, list: list.id })
                 )
             );
         };
@@ -67839,7 +67893,7 @@ module.exports = ListFrame;
 //</button>
 
 
-},{"./modal":426,"./taskFrame":427,"material-ui":46,"react":418}],425:[function(require,module,exports){
+},{"../actions/listActions":420,"../actions/taskActions":421,"./modal":427,"./taskFrame":428,"material-ui":46,"react":418}],426:[function(require,module,exports){
 "use strict";
 
 var _materialUi = require('material-ui');
@@ -67854,8 +67908,6 @@ var Modal = require('./modal');
 var ListActions = require('../actions/listActions');
 var ListStore = require('../stores/listStore');
 var TaskStore = require('../stores/taskStore');
-var ListApi = require('../api/listApi');
-var TaskApi = require('../api/taskApi');
 
 var RaisedButton = _materialUi2.default.RaisedButton;
 
@@ -67898,62 +67950,15 @@ var MainPage = React.createClass({
         if (!listName) {
             return;
         }
-        this.handleCreateList({ name: listName });
+        ListActions.createList({ name: listName });
         this.setState({ showModal: false });
-    },
-
-    handleCreateList: function handleCreateList(list) {
-        var that = this;
-        ListApi.postList(list).then(function (data) {
-            that.setState({ list: data });
-        });
-    },
-
-    handleCreateTask: function handleCreateTask(task) {
-        var that = this;
-        TaskApi.postTask(task).then(function (data) {
-            that.setState({ task: data });
-        });
-    },
-
-    handleEditList: function handleEditList(list) {
-        var that = this;
-        ListApi.editList(list).then(function (data) {
-            that.setState({ list: data });
-        });
-    },
-
-    handleEditTask: function handleEditTask(task) {
-        var that = this;
-        TaskApi.editTask(task).then(function (data) {
-            that.setState({ task: data });
-        });
-    },
-
-    handleDeleteList: function handleDeleteList(id) {
-        var that = this;
-        ListApi.deleteList(id).then(function (data) {
-            that.setState({ list: data });
-        });
-    },
-
-    handleDeleteTask: function handleDeleteTask(id) {
-        var that = this;
-        TaskApi.deleteTask(id).then(function (data) {
-            that.setState({ task: data });
-        });
     },
 
     render: function render() {
         return React.createElement(
             'div',
             null,
-            React.createElement(LisFrame, { list: this.state.list, task: this.state.task,
-                onTaskSubmit: this.handleCreateTask,
-                onDeleteList: this.handleDeleteList,
-                onEditList: this.handleEditList,
-                onEditTask: this.handleEditTask,
-                onDeleteTask: this.handleDeleteTask }),
+            React.createElement(LisFrame, { list: this.state.list, task: this.state.task }),
             React.createElement(
                 'div',
                 { id: 'toDoBtn' },
@@ -67968,7 +67973,7 @@ var MainPage = React.createClass({
 module.exports = MainPage;
 
 
-},{"../actions/listActions":420,"../api/listApi":421,"../api/taskApi":422,"../stores/listStore":432,"../stores/taskStore":433,"./listFrame":424,"./modal":426,"material-ui":46,"react":418}],426:[function(require,module,exports){
+},{"../actions/listActions":420,"../stores/listStore":433,"../stores/taskStore":434,"./listFrame":425,"./modal":427,"material-ui":46,"react":418}],427:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -68037,7 +68042,7 @@ var Modals = React.createClass({
 module.exports = Modals;
 
 
-},{"react":418,"react-bootstrap/lib/Button":174,"react-bootstrap/lib/Input":180,"react-bootstrap/lib/Modal":182}],427:[function(require,module,exports){
+},{"react":418,"react-bootstrap/lib/Button":174,"react-bootstrap/lib/Input":180,"react-bootstrap/lib/Modal":182}],428:[function(require,module,exports){
 "use strict";
 
 var _materialUi = require('material-ui');
@@ -68049,6 +68054,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var React = require('react');
 var Modal = require('./modal');
 var TaskRow = require('./taskRow');
+var TaskActions = require('../actions/taskActions');
 var Table = _materialUi2.default.Table;
 var TableBody = _materialUi2.default.TableBody;
 var TableHeader = _materialUi2.default.TableHeader;
@@ -68083,7 +68089,7 @@ var TaskFrame = React.createClass({
         if (!taskName) {
             return;
         }
-        this.props.onEditTask({ name: taskName, id: taskId });
+        TaskActions.editTask({ name: taskName, id: taskId });
         this.setState({ showModal: false });
     },
 
@@ -68138,8 +68144,7 @@ var TaskFrame = React.createClass({
                     this.props.task.filter(function (obj) {
                         return obj.ListId === listId;
                     }).map(function (task) {
-                        return React.createElement(TaskRow, { task: task, key: task.id, setTask: that.setTask,
-                            onDeleteTask: this.props.onDeleteTask });
+                        return React.createElement(TaskRow, { task: task, key: task.id, setTask: that.setTask });
                     }, this)
                 )
             ),
@@ -68152,7 +68157,7 @@ var TaskFrame = React.createClass({
 module.exports = TaskFrame;
 
 
-},{"./modal":426,"./taskRow":428,"material-ui":46,"react":418}],428:[function(require,module,exports){
+},{"../actions/taskActions":421,"./modal":427,"./taskRow":429,"material-ui":46,"react":418}],429:[function(require,module,exports){
 "use strict";
 
 var _materialUi = require('material-ui');
@@ -68163,6 +68168,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var React = require('react');
 var DateComponent = require('./dateComponent');
+var TaskActions = require('../actions/taskActions');
 var TableRow = _materialUi2.default.TableRow;
 var TableRowColumn = _materialUi2.default.TableRowColumn;
 var Checkbox = _materialUi2.default.Checkbox;
@@ -68177,15 +68183,13 @@ var TaskRow = React.createClass({
     },
 
     editTrigger: function editTrigger(event) {
-        console.log(this.props.task);
         event.preventDefault();
         this.props.setTask(this.props.task);
     },
 
     deleteTask: function deleteTask(task, e) {
         e.preventDefault();
-        var taskId = task;
-        this.props.onDeleteTask({ id: taskId });
+        TaskActions.deleteTask({ id: task });
     },
 
     render: function render() {
@@ -68238,7 +68242,7 @@ var TaskRow = React.createClass({
 module.exports = TaskRow;
 
 
-},{"./dateComponent":423,"material-ui":46,"react":418}],429:[function(require,module,exports){
+},{"../actions/taskActions":421,"./dateComponent":424,"material-ui":46,"react":418}],430:[function(require,module,exports){
 "use strict";
 
 module.exports = {
@@ -68252,7 +68256,7 @@ module.exports = {
 };
 
 
-},{}],430:[function(require,module,exports){
+},{}],431:[function(require,module,exports){
 'use strict';
 
 /*
@@ -68273,7 +68277,7 @@ var Dispatcher = require('flux').Dispatcher;
 module.exports = new Dispatcher();
 
 
-},{"flux":3}],431:[function(require,module,exports){
+},{"flux":3}],432:[function(require,module,exports){
 'use strict';
 
 var _reactTapEventPlugin = require('react-tap-event-plugin');
@@ -68288,14 +68292,14 @@ var ReactDOM = require('react-dom');
 var MainPage = require('./components/mainPage');
 var IntializeActions = require('./actions/initializeActions');
 
-IntializeActions.initApp();
+IntializeActions.initData();
 
 (0, _reactTapEventPlugin2.default)();
 
 ReactDOM.render(React.createElement(MainPage, null), document.getElementById('app'));
 
 
-},{"./actions/initializeActions":419,"./components/mainPage":425,"jquery":6,"react":418,"react-dom":252,"react-tap-event-plugin":256}],432:[function(require,module,exports){
+},{"./actions/initializeActions":419,"./components/mainPage":426,"jquery":6,"react":418,"react-dom":252,"react-tap-event-plugin":256}],433:[function(require,module,exports){
 "use strict";
 
 var Dispatcher = require('../dispatcher/appDispatcher');
@@ -68320,7 +68324,6 @@ var ListStore = Object.assign({}, EventEmmit.prototype, {
     },
 
     getAllLists: function getAllLists() {
-        console.log(_lists);
         return _lists;
     },
 
@@ -68332,25 +68335,19 @@ var ListStore = Object.assign({}, EventEmmit.prototype, {
 Dispatcher.register(function (action) {
     switch (action.actionType) {
         case ActionTypes.INITIALIZE:
-            action.initialData.list.then(function (data) {
-                _lists = data;
-            });
+            _lists = action.initialData.list;
             ListStore.emitChange();
             break;
         case ActionTypes.CREATE_LIST:
-            _lists.push(action.list);
+            _lists = action.list;
             ListStore.emitChange();
             break;
         case ActionTypes.UPDATE_LIST:
-            var existingList = _.find(_lists, { id: action.list.id });
-            var existingListIndex = _.indexOf(_lists, existingList);
-            _lists.splice(existingListIndex, 1, action.list);
+            _lists = action.list;
             ListStore.emitChange();
             break;
         case ActionTypes.DELETE_LIST:
-            _.remove(_lists, function (list) {
-                return action.id === list.id;
-            });
+            _lists = action.list;
             ListStore.emitChange();
             break;
     }
@@ -68359,7 +68356,7 @@ Dispatcher.register(function (action) {
 module.exports = ListStore;
 
 
-},{"../constants/actionTypes":429,"../dispatcher/appDispatcher":430,"events":1,"lodash":7}],433:[function(require,module,exports){
+},{"../constants/actionTypes":430,"../dispatcher/appDispatcher":431,"events":1,"lodash":7}],434:[function(require,module,exports){
 "use strict";
 
 var Dispatcher = require('../dispatcher/appDispatcher');
@@ -68395,25 +68392,19 @@ var TaskStore = Object.assign({}, EventEmmit.prototype, {
 Dispatcher.register(function (action) {
     switch (action.actionType) {
         case ActionTypes.INITIALIZE:
-            action.initialData.task.then(function (data) {
-                _tasks = data;
-            });
+            _tasks = action.initialData.task;
             TaskStore.emitChange();
             break;
         case ActionTypes.CREATE_TASK:
-            _tasks.push(action.task);
+            _tasks = action.task;
             TaskStore.emitChange();
             break;
         case ActionTypes.UPDATE_TASK:
-            var existingTask = _.find(_task, { id: action.task.id });
-            var existingTaskIndex = _.indexOf(_tasks, existingTask);
-            _list.splice(existingTaskIndex, 1, action.task);
+            _tasks = action.task;
             TaskStore.emitChange();
             break;
         case ActionTypes.DELETE_TASK:
-            _.remove(_tasks, function (task) {
-                return task.id === task.id;
-            });
+            _tasks = action.task;
             TaskStore.emitChange();
             break;
     }
@@ -68422,4 +68413,4 @@ Dispatcher.register(function (action) {
 module.exports = TaskStore;
 
 
-},{"../constants/actionTypes":429,"../dispatcher/appDispatcher":430,"events":1,"lodash":7}]},{},[431]);
+},{"../constants/actionTypes":430,"../dispatcher/appDispatcher":431,"events":1,"lodash":7}]},{},[432]);

@@ -3,6 +3,7 @@
 var React = require('react');
 var Modal = require('./modal');
 var TaskRow = require('./taskRow');
+var TaskActions =require('../actions/taskActions');
 import mui from 'material-ui';
 
 var {Table, TableBody, TableHeader, TableRow, TableHeaderColumn} = mui;
@@ -34,7 +35,7 @@ var TaskFrame = React.createClass({
         if (!taskName) {
             return;
         }
-        this.props.onEditTask({name: taskName, id: taskId});
+        TaskActions.editTask({name: taskName, id: taskId});
         this.setState({showModal: false});
     },
 
@@ -64,8 +65,7 @@ var TaskFrame = React.createClass({
                     {this.props.task.filter(function (obj) {
                         return obj.ListId === listId
                     }).map(function (task) {
-                        return <TaskRow task={task} key={task.id} setTask={that.setTask}
-                                        onDeleteTask={this.props.onDeleteTask}/>;
+                        return <TaskRow task={task} key={task.id} setTask={that.setTask}/>;
                     }, this)}
                     </TableBody>
                 </Table>

@@ -4,7 +4,7 @@ var ReactDOM = require('react-dom');
 var MainPage = require('./components/mainPage');
 var IntializeActions = require('./actions/initializeActions');
 
-IntializeActions.initApp();
+IntializeActions.initData();
 
 import injectTapEventPlugin from "react-tap-event-plugin";
 injectTapEventPlugin();

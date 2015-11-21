@@ -6,14 +6,18 @@ var TaskApi = require('../api/taskApi');
 var ListApi = require('../api/listApi');
 
 var InitializeActions = {
-    initApp: function () {
-        Dispatcher.dispatch({
-            actionType: ActionTypes.INITIALIZE,
-            initialData: {
-                list: ListApi.getAllLists(),
-                task: TaskApi.getAllTask()
-            }
-        });
+    initData: function () {
+        ListApi.getAllLists().then(function (list) {
+            TaskApi.getAllTasks().then(function (task) {
+                Dispatcher.dispatch({
+                    actionType: ActionTypes.INITIALIZE,
+                    initialData: {
+                        list: list,
+                        task: task
+                    }
+                });
+            })
+        })
     }
 };
 

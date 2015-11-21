@@ -1,5 +1,5 @@
 var TaskApi = {
-    getAllTask: function () {
+    getAllTasks: function () {
         return $.get("http://localhost:9002/tasks")
     },
     postTask: function (task) {

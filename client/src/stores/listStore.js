@@ -22,7 +22,6 @@ var ListStore = Object.assign({}, EventEmmit.prototype, {
     },
 
     getAllLists: function () {
-        console.log(_lists);
         return _lists;
     },
 
@@ -34,25 +33,19 @@ var ListStore = Object.assign({}, EventEmmit.prototype, {
 Dispatcher.register(function (action) {
     switch (action.actionType) {
         case ActionTypes.INITIALIZE:
-            action.initialData.list.then(function (data) {
-                _lists = data
-            });
+            _lists = action.initialData.list;
             ListStore.emitChange();
             break;
         case ActionTypes.CREATE_LIST:
-            _lists.push(action.list);
+            _lists = action.list;
             ListStore.emitChange();
             break;
         case ActionTypes.UPDATE_LIST:
-            var existingList = _.find(_lists, {id: action.list.id});
-            var existingListIndex = _.indexOf(_lists, existingList);
-            _lists.splice(existingListIndex, 1, action.list);
+            _lists = action.list;
             ListStore.emitChange();
             break;
         case ActionTypes.DELETE_LIST:
-            _.remove(_lists, function(list) {
-                return action.id === list.id;
-            });
+            _lists = action.list;
             ListStore.emitChange();
             break;
     }
