@@ -3,7 +3,7 @@
   padding: 0; }
 
 #app #taskTable {
-  width: 46vw;
+  width: 50vw;
   margin: auto;
   margin-top: 15px;
   margin-bottom: 15px;
@@ -16,29 +16,15 @@
     height: 50px;
     padding-left: 20px;
     padding-top: 5px; }
-    #app #taskTable #taskHeader button {
-      border: none;
-      background: none; }
-    #app #taskTable #taskHeader button:focus {
-      outline: none;
-      border: none; }
-    #app #taskTable #taskHeader .glyphicon-calendar {
-      font-size: 1.3em;
-      color: #284266; }
   #app #taskTable #taskNav {
-    width: 100%;
     padding: 13px;
-    height: 60px;
     background-color: #D1D1D1; }
-    #app #taskTable #taskNav .glyphicon-plus {
-      float: left;
-      font-size: 1.8em;
-      padding-top: 5px;
-      padding-right: 15px;
-      padding-left: 5px;
-      color: #599273; }
+    #app #taskTable #taskNav .plusIcon {
+      color: green;
+      vertical-align: middle;
+      margin-right: 10px; }
     #app #taskTable #taskNav .inputForm {
-      width: 80%;
+      width: 75%;
       height: 38px;
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
@@ -46,33 +32,44 @@
   #app #taskTable table tr:hover {
     background-color: #FCFED5; }
   #app #taskTable table th:nth-child(1) {
-    width: 4vw; }
+    width: 8%; }
   #app #taskTable table th:nth-child(2) {
-    width: 7vw; }
+    width: 20%; }
   #app #taskTable table th:nth-child(4) {
-    width: 6vw; }
+    width: 15%; }
   #app #taskTable table td {
     display: table-cell;
     vertical-align: middle; }
-  #app #taskTable table td:first-child {
+  #app #taskTable table #firstColumn {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
     white-space: normal;
     border-right: 6px double #F4E8DB;
     vertical-align: inherit;
     width: 8%; }
-    #app #taskTable table td:first-child input {
-      margin: auto; }
+    #app #taskTable table #firstColumn div {
+      margin: auto;
+      width: 50%; }
   #app #taskTable table td:nth-child(2) {
     white-space: normal;
     border-right: 1px solid #ddd;
-    width: 15%; }
+    width: 20%; }
   #app #taskTable table td:nth-child(3) {
     white-space: normal !important;
     border-right: 1px solid #ddd;
     word-wrap: break-word; }
-  #app #taskTable table td:nth-child(4) {
+  #app #taskTable table #forthColumn {
     width: 15%;
-    text-align: center;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
     color: #979798; }
+    #app #taskTable table #forthColumn div {
+      margin: auto;
+      width: 4vw; }
+      #app #taskTable table #forthColumn div .editIcon {
+        margin-right: 5px; }
+      #app #taskTable table #forthColumn div .material-icons:hover {
+        cursor: pointer; }
 
 #app #toDoBtn {
   margin: auto;

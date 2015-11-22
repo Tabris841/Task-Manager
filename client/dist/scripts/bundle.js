@@ -67655,6 +67655,8 @@ module.exports = TaskActions;
 },{"../api/taskApi":423,"../constants/actionTypes":430,"../dispatcher/appDispatcher":431}],422:[function(require,module,exports){
 "use strict";
 
+var $ = require('jquery');
+
 var ListApi = {
     getAllLists: function getAllLists() {
         return $.get("http://localhost:9002/lists");
@@ -67683,8 +67685,10 @@ var ListApi = {
 module.exports = ListApi;
 
 
-},{}],423:[function(require,module,exports){
+},{"jquery":6}],423:[function(require,module,exports){
 "use strict";
+
+var $ = require('jquery');
 
 var TaskApi = {
     getAllTasks: function getAllTasks() {
@@ -67714,7 +67718,7 @@ var TaskApi = {
 module.exports = TaskApi;
 
 
-},{}],424:[function(require,module,exports){
+},{"jquery":6}],424:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -67740,7 +67744,7 @@ var DateComponent = React.createClass({
         return React.createElement(DatePicker, {
             value: this.state.controlledDate,
             onChange: this._handleChange,
-            textFieldStyle: { width: '4.5vw' }
+            textFieldStyle: { width: '80px' }
         });
     }
 });
@@ -67765,6 +67769,7 @@ var TaskActions = require('../actions/taskActions');
 var AppBar = _materialUi2.default.AppBar;
 var IconButton = _materialUi2.default.IconButton;
 var RaisedButton = _materialUi2.default.RaisedButton;
+var FontIcon = _materialUi2.default.FontIcon;
 
 var ListFrame = React.createClass({
     displayName: 'ListFrame',
@@ -67861,9 +67866,17 @@ var ListFrame = React.createClass({
                 React.createElement(
                     'form',
                     { id: 'taskNav', onSubmit: this.createTask, name: list.id },
-                    React.createElement('span', { className: 'glyphicon glyphicon-plus' }),
+                    React.createElement(
+                        FontIcon,
+                        { className: 'material-icons' },
+                        React.createElement(
+                            'span',
+                            { className: 'plusIcon' },
+                            'loupe'
+                        )
+                    ),
                     React.createElement('input', { className: 'inputForm form-control', type: 'text', name: 'text', placeholder: 'Start typing here to create a task...' }),
-                    React.createElement(RaisedButton, { type: 'submit', label: 'Add task', secondary: true })
+                    React.createElement(RaisedButton, { id: 'addTaskBtn', type: 'submit', label: 'Add task', secondary: true })
                 ),
                 React.createElement(
                     'div',
@@ -67883,14 +67896,6 @@ var ListFrame = React.createClass({
 });
 
 module.exports = ListFrame;
-
-//<button className="pull-right" >
-//    <span className="glyphicon glyphicon-trash"></span>
-//</button>
-//&nbsp;&nbsp;
-//<button className="pull-right" onClick={this.open.bind(this, list.name, list.id)}>
-//    <span className="glyphicon glyphicon-pencil"></span>
-//</button>
 
 
 },{"../actions/listActions":420,"../actions/taskActions":421,"./modal":427,"./taskFrame":428,"material-ui":46,"react":418}],426:[function(require,module,exports){
@@ -68172,7 +68177,7 @@ var TaskActions = require('../actions/taskActions');
 var TableRow = _materialUi2.default.TableRow;
 var TableRowColumn = _materialUi2.default.TableRowColumn;
 var Checkbox = _materialUi2.default.Checkbox;
-var IconButton = _materialUi2.default.IconButton;
+var FontIcon = _materialUi2.default.FontIcon;
 
 var TaskRow = React.createClass({
     displayName: 'TaskRow',
@@ -68198,8 +68203,12 @@ var TaskRow = React.createClass({
             null,
             React.createElement(
                 TableRowColumn,
-                null,
-                React.createElement(Checkbox, null)
+                { id: 'firstColumn' },
+                React.createElement(
+                    'div',
+                    null,
+                    React.createElement(Checkbox, null)
+                )
             ),
             React.createElement(
                 TableRowColumn,
@@ -68213,25 +68222,30 @@ var TaskRow = React.createClass({
             ),
             React.createElement(
                 TableRowColumn,
-                null,
+                { id: 'forthColumn' },
                 React.createElement(
-                    IconButton,
-                    { iconClassName: 'material-icons', onClick: this.editTrigger },
+                    'div',
+                    null,
                     React.createElement(
-                        'span',
-                        {
-                            className: 'grey' },
-                        'edit'
-                    )
-                ),
-                React.createElement(
-                    IconButton,
-                    { iconClassName: 'material-icons', onClick: this.deleteTask.bind(this, this.props.task.id) },
+                        FontIcon,
+                        { className: 'material-icons', onClick: this.editTrigger },
+                        React.createElement(
+                            'span',
+                            {
+                                className: 'grey editIcon' },
+                            'edit'
+                        )
+                    ),
                     React.createElement(
-                        'span',
-                        {
-                            className: 'grey' },
-                        'delete'
+                        FontIcon,
+                        { className: 'material-icons',
+                            onClick: this.deleteTask.bind(this, this.props.task.id) },
+                        React.createElement(
+                            'span',
+                            {
+                                className: 'grey' },
+                            'delete'
+                        )
                     )
                 )
             )
@@ -68286,7 +68300,6 @@ var _reactTapEventPlugin2 = _interopRequireDefault(_reactTapEventPlugin);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-$ = jQuery = require('jquery');
 var React = require('react');
 var ReactDOM = require('react-dom');
 var MainPage = require('./components/mainPage');
@@ -68299,7 +68312,7 @@ IntializeActions.initData();
 ReactDOM.render(React.createElement(MainPage, null), document.getElementById('app'));
 
 
-},{"./actions/initializeActions":419,"./components/mainPage":426,"jquery":6,"react":418,"react-dom":252,"react-tap-event-plugin":256}],433:[function(require,module,exports){
+},{"./actions/initializeActions":419,"./components/mainPage":426,"react":418,"react-dom":252,"react-tap-event-plugin":256}],433:[function(require,module,exports){
 "use strict";
 
 var Dispatcher = require('../dispatcher/appDispatcher');

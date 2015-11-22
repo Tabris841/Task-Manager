@@ -5,7 +5,7 @@
 
 #app {
   #taskTable {
-    width: 46vw;
+    width: 50vw;
     margin: auto;
     margin-top: 15px;
     margin-bottom: 15px;
@@ -18,34 +18,17 @@
       height: 50px;
       padding-left: 20px;
       padding-top: 5px;
-      button {
-        border: none;
-        background: none;
-      }
-      button:focus {
-        outline: none;
-        border: none;
-      }
-      .glyphicon-calendar {
-        font-size: 1.3em;
-        color: #284266;
-      }
     }
     #taskNav {
-      width: 100%;
       padding: 13px;
-      height: 60px;
       background-color: #D1D1D1;
-      .glyphicon-plus {
-        float: left;
-        font-size: 1.8em;
-        padding-top: 5px;
-        padding-right: 15px;
-        padding-left: 5px;
-        color: #599273;
+      .plusIcon {
+        color: green;
+        vertical-align: middle;
+        margin-right: 10px;
       }
       .inputForm {
-        width: 80%;
+        width: 75%;
         height: 38px;
         border-bottom-right-radius: 0;
         border-top-right-radius: 0;
@@ -57,41 +40,55 @@
         background-color: #FCFED5;
       }
       th:nth-child(1) {
-        width: 4vw;
+        width: 8%;
       }
       th:nth-child(2) {
-        width: 7vw;
+        width: 20%;
       }
       th:nth-child(4) {
-        width: 6vw;
+        width: 15%;
       }
       td {
         display: table-cell;
         vertical-align: middle;
       }
-      td:first-child {
+      #firstColumn {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
         white-space: normal;
         border-right: 6px double #F4E8DB;
         vertical-align: inherit;
         width: 8%;
-        input {
+        div {
           margin: auto;
+          width: 50%;
         }
       }
       td:nth-child(2) {
         white-space: normal;
         border-right: 1px solid #ddd;
-        width: 15%;
+        width: 20%;
       }
       td:nth-child(3) {
         white-space: normal !important;
         border-right: 1px solid #ddd;
         word-wrap: break-word;
       }
-      td:nth-child(4) {
+      #forthColumn {
         width: 15%;
-        text-align: center;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
         color: #979798;
+        div {
+          margin: auto;
+          width: 4vw;
+          .editIcon {
+            margin-right: 5px;
+          }
+          .material-icons:hover {
+            cursor: pointer;
+          }
+        }
       }
     }
   }

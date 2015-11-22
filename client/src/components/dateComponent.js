@@ -19,7 +19,7 @@ var DateComponent = React.createClass({
         return <DatePicker
             value={this.state.controlledDate}
             onChange={this._handleChange}
-            textFieldStyle={{width: '4.5vw'}}
+            textFieldStyle={{width: '80px'}}
         />;
     }
 });

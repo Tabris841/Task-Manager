@@ -1,3 +1,5 @@
+var $ = require('jquery');
+
 var TaskApi = {
     getAllTasks: function () {
         return $.get("http://localhost:9002/tasks")

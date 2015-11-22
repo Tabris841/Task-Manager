@@ -1,4 +1,3 @@
-$ = jQuery = require('jquery');
 var React = require('react');
 var ReactDOM = require('react-dom');
 var MainPage = require('./components/mainPage');

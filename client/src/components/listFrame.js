@@ -7,7 +7,7 @@ var Modal = require('./modal');
 var TaskActions =require('../actions/taskActions');
 import mui from 'material-ui';
 
-var {AppBar, IconButton, RaisedButton} = mui;
+var {AppBar, IconButton, RaisedButton, FontIcon} = mui;
 
 var ListFrame = React.createClass({
     getInitialState: function () {
@@ -76,9 +76,9 @@ var ListFrame = React.createClass({
                                                 tooltip="Delete"><span className="white">delete</span></IconButton>
                                 </div>}/>
                     <form id="taskNav" onSubmit={this.createTask} name={list.id}>
-                        <span className="glyphicon glyphicon-plus"></span>
+                        <FontIcon className="material-icons"><span className="plusIcon">loupe</span></FontIcon>
                         <input className="inputForm form-control"type="text" name="text" placeholder="Start typing here to create a task..."/>
-                        <RaisedButton type="submit" label="Add task" secondary={true}/>
+                        <RaisedButton id="addTaskBtn" type="submit" label="Add task" secondary={true}/>
                     </form>
                     <div>
                         <TaskFrame task={this.props.task} list={list.id}/>
@@ -98,10 +98,4 @@ var ListFrame = React.createClass({
 
 module.exports = ListFrame;
 
-//<button className="pull-right" >
-//    <span className="glyphicon glyphicon-trash"></span>
-//</button>
-//&nbsp;&nbsp;
-//<button className="pull-right" onClick={this.open.bind(this, list.name, list.id)}>
-//    <span className="glyphicon glyphicon-pencil"></span>
-//</button>
+

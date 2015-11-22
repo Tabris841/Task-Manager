@@ -2,10 +2,10 @@
 
 var React = require('react');
 var DateComponent = require('./dateComponent');
-var TaskActions =require('../actions/taskActions');
+var TaskActions = require('../actions/taskActions');
 import mui from 'material-ui';
 
-var {TableRow, TableRowColumn, Checkbox, IconButton} = mui;
+var {TableRow, TableRowColumn, Checkbox, FontIcon} = mui;
 
 var TaskRow = React.createClass({
     propTypes: {
@@ -26,16 +26,19 @@ var TaskRow = React.createClass({
     render: function () {
         return (
             <TableRow>
-                <TableRowColumn>
-                    <Checkbox/>
+                <TableRowColumn id="firstColumn">
+                    <div><Checkbox/></div>
                 </TableRowColumn>
                 <TableRowColumn><DateComponent date={this.props.task.createdAt}/></TableRowColumn>
                 <TableRowColumn>{this.props.task.name}</TableRowColumn>
-                <TableRowColumn>
-                    <IconButton iconClassName="material-icons" onClick={this.editTrigger}><span
-                        className="grey">edit</span></IconButton>
-                    <IconButton iconClassName="material-icons" onClick={this.deleteTask.bind(this, this.props.task.id)} ><span
-                        className="grey">delete</span></IconButton>
+                <TableRowColumn id="forthColumn">
+                    <div>
+                        <FontIcon className="material-icons" onClick={this.editTrigger}><span
+                            className="grey editIcon">edit</span></FontIcon>
+                        <FontIcon className="material-icons"
+                                  onClick={this.deleteTask.bind(this, this.props.task.id)}><span
+                            className="grey">delete</span></FontIcon>
+                    </div>
                 </TableRowColumn>
             </TableRow>
         )

@@ -17,9 +17,8 @@ var config = {
     paths: {
         html: './src/*.html',
         css: [
-            //'node_modules/bootstrap/dist/css/bootstrap.min.css',
-            //'node_modules/bootstrap/dist/css/bootstrap-theme.min.css',
-            'node_modules/react-datepicker/dist/react-datepicker.css',
+            'node_modules/bootstrap/dist/css/bootstrap.min.css',
+            'node_modules/bootstrap/dist/css/bootstrap-theme.min.css',
             'src/styles/main.css'
         ],
         dist: './dist',
