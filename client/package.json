@@ -22,8 +22,6 @@
     "lodash": "^3.10.1",
     "material-ui": "^0.13.3",
     "react": "^0.14.2",
-    "react-bootstrap": "^0.27.3",
-    "react-datepicker": "^0.15.2",
     "react-dom": "^0.14.2",
     "react-tap-event-plugin": "^0.2.1",
     "reactify": "^1.1.1",

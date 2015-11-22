@@ -1,9 +1,8 @@
 "use strict";
 
 var React = require('react');
-var Modal = require("react-bootstrap/lib/Modal");
-var Button = require("react-bootstrap/lib/Button");
-var Input = require("react-bootstrap/lib/Input");
+import mui from 'material-ui';
+var {Dialog, FlatButton, TextField} = mui;
 
 var Modals = React.createClass ({
     getInitialState: function () {
@@ -25,20 +24,29 @@ var Modals = React.createClass ({
             value: this.state.value,
             id: this.props.id
         };
+        var customActions = [
+            <FlatButton
+                key={1}
+                label="Cancel"
+                secondary={true}
+                onTouchTap={this.props.close}/>,
+            <FlatButton
+                key={2}
+                label="Submit"
+                primary={true}
+                onTouchTap={this.props.handleSubmit.bind(null, data)}/>
+        ];
         return (
-            <Modal show={this.props.showModal} onHide={this.props.close}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Input type="textarea"  placeholder="Enter text" value={this.state.value} onChange={this.setValueState}/>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button bsStyle="primary"
-                            onClick={this.props.handleSubmit.bind(null, data)}>Save</Button>
-                    <Button onClick={this.props.close}>Close</Button>
-                </Modal.Footer>
-            </Modal>
+            <Dialog
+                title="Dialog"
+                actions={customActions}
+                actionFocus="submit"
+                open={this.props.showModal}
+                onRequestClose={this.props.close}>
+                <TextField type="textarea" hintText="Enter text" value={this.state.value} onChange={this.setValueState}
+                           style={{width: '100%'}} multiLine={true}/>
+            </Dialog>
+
         )
     }
 });

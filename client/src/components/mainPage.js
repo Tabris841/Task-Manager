@@ -6,11 +6,11 @@ var Modal = require('./modal');
 var ListActions = require('../actions/listActions');
 var ListStore = require('../stores/listStore');
 var TaskStore = require('../stores/taskStore');
-
 import mui from 'material-ui';
 var {RaisedButton} = mui;
 
 var MainPage = React.createClass({
+
     getInitialState: function () {
         return {
             list: ListStore.getAllLists(),
@@ -57,8 +57,8 @@ var MainPage = React.createClass({
             <div>
                 <LisFrame list={this.state.list} task={this.state.task}/>
                 <div id="toDoBtn">
-                    <RaisedButton id="toDoBtn" secondary={true} onClick={this.open} label="Add TODO List">
-                    </RaisedButton>
+                    <RaisedButton id="toDoBtn" secondary={true} label="Add TODO List"
+                                  onTouchTap={this.open}/>
                 </div>
                 <Modal showModal={this.state.showModal} close={this.close} value={this.state.value}
                        handleSubmit={this.createList}/>

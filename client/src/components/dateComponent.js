@@ -17,6 +17,7 @@ var DateComponent = React.createClass({
 
     render: function () {
         return <DatePicker
+            id="datePicker"
             value={this.state.controlledDate}
             onChange={this._handleChange}
             textFieldStyle={{width: '80px'}}

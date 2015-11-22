@@ -29,14 +29,10 @@
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
       display: inline-block; }
+  #app #taskTable table thead {
+    display: none; }
   #app #taskTable table tr:hover {
     background-color: #FCFED5; }
-  #app #taskTable table th:nth-child(1) {
-    width: 8%; }
-  #app #taskTable table th:nth-child(2) {
-    width: 20%; }
-  #app #taskTable table th:nth-child(4) {
-    width: 15%; }
   #app #taskTable table td {
     display: table-cell;
     vertical-align: middle; }
@@ -54,6 +50,8 @@
     white-space: normal;
     border-right: 1px solid #ddd;
     width: 20%; }
+    #app #taskTable table td:nth-child(2) #datePicker:hover {
+      cursor: pointer; }
   #app #taskTable table td:nth-child(3) {
     white-space: normal !important;
     border-right: 1px solid #ddd;
@@ -67,13 +65,13 @@
       margin: auto;
       width: 4vw; }
       #app #taskTable table #forthColumn div .editIcon {
-        margin-right: 5px; }
+        margin-right: 10px; }
       #app #taskTable table #forthColumn div .material-icons:hover {
         cursor: pointer; }
 
 #app #toDoBtn {
   margin: auto;
-  width: 10vw; }
+  width: 14vw; }
 
 #app .grey {
   color: #787777; }

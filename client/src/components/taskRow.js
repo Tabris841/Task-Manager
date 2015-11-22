@@ -5,7 +5,8 @@ var DateComponent = require('./dateComponent');
 var TaskActions = require('../actions/taskActions');
 import mui from 'material-ui';
 
-var {TableRow, TableRowColumn, Checkbox, FontIcon} = mui;
+var {TableRow, TableRowColumn, Checkbox, FontIcon, Styles} = mui;
+var {Colors} = Styles;
 
 var TaskRow = React.createClass({
     propTypes: {
@@ -33,11 +34,11 @@ var TaskRow = React.createClass({
                 <TableRowColumn>{this.props.task.name}</TableRowColumn>
                 <TableRowColumn id="forthColumn">
                     <div>
-                        <FontIcon className="material-icons" onClick={this.editTrigger}><span
-                            className="grey editIcon">edit</span></FontIcon>
+                        <FontIcon className="material-icons editIcon" onClick={this.editTrigger} color={Colors.grey500}
+                                  hoverColor={Colors.greenA200}>edit</FontIcon>
                         <FontIcon className="material-icons"
-                                  onClick={this.deleteTask.bind(this, this.props.task.id)}><span
-                            className="grey">delete</span></FontIcon>
+                                  onClick={this.deleteTask.bind(this, this.props.task.id)} color={Colors.grey500}
+                                  hoverColor={Colors.greenA200}>delete</FontIcon>
                     </div>
                 </TableRowColumn>
             </TableRow>

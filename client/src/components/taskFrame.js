@@ -55,10 +55,6 @@ var TaskFrame = React.createClass({
                 <Table>
                     <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
                         <TableRow>
-                            <TableHeaderColumn>Done</TableHeaderColumn>
-                            <TableHeaderColumn>Deadline</TableHeaderColumn>
-                            <TableHeaderColumn>Task</TableHeaderColumn>
-                            <TableHeaderColumn>Actions</TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
