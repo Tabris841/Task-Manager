@@ -64764,6 +64764,7 @@ var TaskFrame = React.createClass({
             showModal: true
         });
     },
+
     render: function render() {
         var listId = this.props.list,
             that = this;
@@ -64851,7 +64852,7 @@ var TaskRow = React.createClass({
             React.createElement(
                 TableRowColumn,
                 null,
-                React.createElement(DateComponent, { date: this.props.task.createdAt })
+                React.createElement(DateComponent, { date: this.props.task.deadline, taskName: this.props.task.name, taskId: this.props.id, submitDate: this.editTrigger })
             ),
             React.createElement(
                 TableRowColumn,

@@ -30,7 +30,7 @@ var TaskRow = React.createClass({
                 <TableRowColumn id="firstColumn">
                     <div><Checkbox/></div>
                 </TableRowColumn>
-                <TableRowColumn><DateComponent date={this.props.task.createdAt}/></TableRowColumn>
+                <TableRowColumn><DateComponent date={this.props.task.deadline} taskName={this.props.task.name} taskId={this.props.id} submitDate={this.editTrigger}/></TableRowColumn>
                 <TableRowColumn>{this.props.task.name}</TableRowColumn>
                 <TableRowColumn id="forthColumn">
                     <div>

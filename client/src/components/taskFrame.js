@@ -46,6 +46,7 @@ var TaskFrame = React.createClass({
             showModal: true
         });
     },
+
     render: function () {
         var listId = this.props.list,
             that = this;
