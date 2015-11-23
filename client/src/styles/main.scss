@@ -34,6 +34,9 @@
         border-top-right-radius: 0;
         display: inline-block;
       }
+      #addTaskBtn {
+        background-color: #4CAF50 !important;
+      }
     }
     table {
       thead {
@@ -52,7 +55,7 @@
         white-space: normal;
         border-right: 6px double #F4E8DB;
         vertical-align: inherit;
-        width: 8%;
+        width: 60px;
         div {
           margin: auto;
           width: 50%;
@@ -61,7 +64,7 @@
       td:nth-child(2) {
         white-space: normal;
         border-right: 1px solid #ddd;
-        width: 20%;
+        width: 120px;
         #datePicker:hover {
           cursor: pointer;
         }
@@ -72,15 +75,15 @@
         word-wrap: break-word;
       }
       #forthColumn {
-        width: 15%;
+        width: 120px;
         padding-left: 0 !important;
         padding-right: 0 !important;
         color: #979798;
         div {
           margin: auto;
-          width: 4vw;
+          width: 80px;
           .editIcon {
-            margin-right: 10px;
+            margin-right: 15px;
           }
           .material-icons:hover {
             cursor: pointer;
@@ -91,7 +94,8 @@
   }
   #toDoBtn {
     margin: auto;
-    width: 14vw;
+    width: 140px;
+    background-color: #7887AB !important;
   }
   .grey {
     color: rgb(120, 119, 119);

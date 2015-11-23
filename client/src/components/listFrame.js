@@ -7,9 +7,14 @@ var Modal = require('./modal');
 var TaskActions =require('../actions/taskActions');
 import mui from 'material-ui';
 
-var {AppBar, IconButton, RaisedButton, FontIcon} = mui;
+var {AppBar, IconButton, RaisedButton, FontIcon, Styles} = mui;
+var {Colors} = Styles;
 
 var ListFrame = React.createClass({
+    propTypes: {
+        list: React.PropTypes.array.isRequired,
+        task: React.PropTypes.array.isRequired
+    },
     getInitialState: function () {
         return {
             value: "",
@@ -30,8 +35,7 @@ var ListFrame = React.createClass({
         });
     },
 
-    editList: function (list, e) {
-        e.preventDefault();
+    editList: function (list) {
         var listName = list.value;
         var listId = list.id;
         if (!listName) {
@@ -41,8 +45,7 @@ var ListFrame = React.createClass({
         this.setState({showModal: false});
     },
 
-    deleteList: function (list, e) {
-        e.preventDefault();
+    deleteList: function (list) {
         ListActions.deleteList({id: list});
     },
 
@@ -54,7 +57,7 @@ var ListFrame = React.createClass({
         if (!text) {
             return;
         }
-        TaskActions.createTask({name: text, ListId: listId});
+        TaskActions.createTask({name: text, ListId: listId, deadline: Date()});
         form.querySelector('[name="text"]').value = '';
     },
 
@@ -62,7 +65,7 @@ var ListFrame = React.createClass({
         var createList = function (list) {
             return (
                 <div id="taskTable" key={list.id}>
-                    <AppBar title={list.name}
+                    <AppBar title={list.name} style={{'backgroundColor': '#4F628E'}}
                             iconElementLeft={
                                 <IconButton iconClassName="material-icons" tooltipPosition="bottom-center"
                                                 tooltip="List"><span className="white">date_range</span></IconButton>}
@@ -78,7 +81,7 @@ var ListFrame = React.createClass({
                     <form id="taskNav" onSubmit={this.createTask} name={list.id}>
                         <FontIcon className="material-icons"><span className="plusIcon">loupe</span></FontIcon>
                         <input className="inputForm form-control"type="text" name="text" placeholder="Start typing here to create a task..."/>
-                        <RaisedButton id="addTaskBtn" type="submit" label="Add task" secondary={true}/>
+                        <RaisedButton id="addTaskBtn" type="submit" label="Add task"/>
                     </form>
                     <div>
                         <TaskFrame task={this.props.task} list={list.id}/>

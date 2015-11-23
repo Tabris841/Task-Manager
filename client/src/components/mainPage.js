@@ -10,7 +10,6 @@ import mui from 'material-ui';
 var {RaisedButton} = mui;
 
 var MainPage = React.createClass({
-
     getInitialState: function () {
         return {
             list: ListStore.getAllLists(),
@@ -45,7 +44,7 @@ var MainPage = React.createClass({
     createList: function (list, e) {
         e.preventDefault();
         var listName = list.value;
-        if (!listName) {
+        if (!list) {
             return;
         }
         ListActions.createList({name: listName});
@@ -57,7 +56,7 @@ var MainPage = React.createClass({
             <div>
                 <LisFrame list={this.state.list} task={this.state.task}/>
                 <div id="toDoBtn">
-                    <RaisedButton id="toDoBtn" secondary={true} label="Add TODO List"
+                    <RaisedButton id="toDoBtn" label="Add TODO List"
                                   onTouchTap={this.open}/>
                 </div>
                 <Modal showModal={this.state.showModal} close={this.close} value={this.state.value}

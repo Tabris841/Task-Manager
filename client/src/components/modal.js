@@ -5,6 +5,13 @@ import mui from 'material-ui';
 var {Dialog, FlatButton, TextField} = mui;
 
 var Modals = React.createClass ({
+    propTypes: {
+        showModal: React.PropTypes.bool.isRequired,
+        close: React.PropTypes.func.isRequired,
+        value: React.PropTypes.string.isRequired,
+        handleSubmit: React.PropTypes.func.isRequired
+    },
+
     getInitialState: function () {
         return {
             value: ''

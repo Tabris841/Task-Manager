@@ -64388,14 +64388,19 @@ module.exports = TaskApi;
 
 var React = require('react');
 var DatePicker = require('material-ui/lib/date-picker/date-picker');
-var DatePickerDialog = require('material-ui/lib/date-picker/date-picker-dialog');
 
 var DateComponent = React.createClass({
     displayName: 'DateComponent',
 
+    propTypes: {
+        date: React.PropTypes.string.isRequired,
+        dateChanged: React.PropTypes.func.isRequired
+    },
+
     getInitialState: function getInitialState() {
         return {
-            controlledDate: new Date(this.props.date)
+            controlledDate: new Date(this.props.date),
+            minDate: new Date()
         };
     },
 
@@ -64403,11 +64408,13 @@ var DateComponent = React.createClass({
         this.setState({
             controlledDate: date
         });
+        this.props.dateChanged(date);
     },
 
     render: function render() {
         return React.createElement(DatePicker, {
             id: 'datePicker',
+            minDate: this.state.minDate,
             value: this.state.controlledDate,
             onChange: this._handleChange,
             textFieldStyle: { width: '80px' }
@@ -64418,7 +64425,7 @@ var DateComponent = React.createClass({
 module.exports = DateComponent;
 
 
-},{"material-ui/lib/date-picker/date-picker":31,"material-ui/lib/date-picker/date-picker-dialog":29,"react":339}],346:[function(require,module,exports){
+},{"material-ui/lib/date-picker/date-picker":31,"react":339}],346:[function(require,module,exports){
 "use strict";
 
 var _materialUi = require('material-ui');
@@ -64436,10 +64443,16 @@ var AppBar = _materialUi2.default.AppBar;
 var IconButton = _materialUi2.default.IconButton;
 var RaisedButton = _materialUi2.default.RaisedButton;
 var FontIcon = _materialUi2.default.FontIcon;
+var Styles = _materialUi2.default.Styles;
+var Colors = Styles.Colors;
 
 var ListFrame = React.createClass({
     displayName: 'ListFrame',
 
+    propTypes: {
+        list: React.PropTypes.array.isRequired,
+        task: React.PropTypes.array.isRequired
+    },
     getInitialState: function getInitialState() {
         return {
             value: "",
@@ -64459,8 +64472,7 @@ var ListFrame = React.createClass({
         });
     },
 
-    editList: function editList(list, e) {
-        e.preventDefault();
+    editList: function editList(list) {
         var listName = list.value;
         var listId = list.id;
         if (!listName) {
@@ -64470,8 +64482,7 @@ var ListFrame = React.createClass({
         this.setState({ showModal: false });
     },
 
-    deleteList: function deleteList(list, e) {
-        e.preventDefault();
+    deleteList: function deleteList(list) {
         ListActions.deleteList({ id: list });
     },
 
@@ -64483,7 +64494,7 @@ var ListFrame = React.createClass({
         if (!text) {
             return;
         }
-        TaskActions.createTask({ name: text, ListId: listId });
+        TaskActions.createTask({ name: text, ListId: listId, deadline: Date() });
         form.querySelector('[name="text"]').value = '';
     },
 
@@ -64492,7 +64503,7 @@ var ListFrame = React.createClass({
             return React.createElement(
                 'div',
                 { id: 'taskTable', key: list.id },
-                React.createElement(AppBar, { title: list.name,
+                React.createElement(AppBar, { title: list.name, style: { 'backgroundColor': '#4F628E' },
                     iconElementLeft: React.createElement(
                         IconButton,
                         { iconClassName: 'material-icons', tooltipPosition: 'bottom-center',
@@ -64542,7 +64553,7 @@ var ListFrame = React.createClass({
                         )
                     ),
                     React.createElement('input', { className: 'inputForm form-control', type: 'text', name: 'text', placeholder: 'Start typing here to create a task...' }),
-                    React.createElement(RaisedButton, { id: 'addTaskBtn', type: 'submit', label: 'Add task', secondary: true })
+                    React.createElement(RaisedButton, { id: 'addTaskBtn', type: 'submit', label: 'Add task' })
                 ),
                 React.createElement(
                     'div',
@@ -64617,7 +64628,7 @@ var MainPage = React.createClass({
     createList: function createList(list, e) {
         e.preventDefault();
         var listName = list.value;
-        if (!listName) {
+        if (!list) {
             return;
         }
         ListActions.createList({ name: listName });
@@ -64632,7 +64643,7 @@ var MainPage = React.createClass({
             React.createElement(
                 'div',
                 { id: 'toDoBtn' },
-                React.createElement(RaisedButton, { id: 'toDoBtn', secondary: true, label: 'Add TODO List',
+                React.createElement(RaisedButton, { id: 'toDoBtn', label: 'Add TODO List',
                     onTouchTap: this.open })
             ),
             React.createElement(Modal, { showModal: this.state.showModal, close: this.close, value: this.state.value,
@@ -64660,6 +64671,13 @@ var TextField = _materialUi2.default.TextField;
 
 var Modals = React.createClass({
     displayName: 'Modals',
+
+    propTypes: {
+        showModal: React.PropTypes.bool.isRequired,
+        close: React.PropTypes.func.isRequired,
+        value: React.PropTypes.string.isRequired,
+        handleSubmit: React.PropTypes.func.isRequired
+    },
 
     getInitialState: function getInitialState() {
         return {
@@ -64723,11 +64741,14 @@ var Table = _materialUi2.default.Table;
 var TableBody = _materialUi2.default.TableBody;
 var TableHeader = _materialUi2.default.TableHeader;
 var TableRow = _materialUi2.default.TableRow;
-var TableHeaderColumn = _materialUi2.default.TableHeaderColumn;
 
 var TaskFrame = React.createClass({
     displayName: 'TaskFrame',
 
+    propTypes: {
+        list: React.PropTypes.number.isRequired,
+        task: React.PropTypes.array.isRequired
+    },
     getInitialState: function getInitialState() {
         return {
             value: "",
@@ -64746,14 +64767,11 @@ var TaskFrame = React.createClass({
         });
     },
 
-    editTask: function editTask(task, e) {
-        e.preventDefault();
-        var taskName = task.value;
-        var taskId = task.id;
-        if (!taskName) {
+    editTask: function editTask(data) {
+        if (!data.value) {
             return;
         }
-        TaskActions.editTask({ name: taskName, id: taskId });
+        TaskActions.editTask({ name: data.value, id: data.id, deadline: data.deadline, done: data.done });
         this.setState({ showModal: false });
     },
 
@@ -64786,7 +64804,7 @@ var TaskFrame = React.createClass({
                     this.props.task.filter(function (obj) {
                         return obj.ListId === listId;
                     }).map(function (task) {
-                        return React.createElement(TaskRow, { task: task, key: task.id, setTask: that.setTask });
+                        return React.createElement(TaskRow, { task: task, key: task.id, setTask: that.setTask, editTask: that.editTask });
                     }, this)
                 )
             ),
@@ -64823,7 +64841,34 @@ var TaskRow = React.createClass({
 
     propTypes: {
         task: React.PropTypes.object.isRequired,
-        setTask: React.PropTypes.func.isRequired
+        setTask: React.PropTypes.func.isRequired,
+        editTask: React.PropTypes.func.isRequired
+    },
+
+    getInitialState: function getInitialState() {
+        return {
+            date: '',
+            done: this.props.task.done
+        };
+    },
+
+    taskChanged: function taskChanged(date, done) {
+        if (done == undefined) {
+            done = this.state.done;
+        }
+
+        var data = {
+            value: this.props.task.name,
+            id: this.props.task.id,
+            deadline: date,
+            done: done
+        };
+        this.props.editTask(data);
+    },
+
+    setDone: function setDone() {
+        var done = this.state.done ? false : true;
+        this.taskChanged(this.props.task.deadline, done);
     },
 
     editTrigger: function editTrigger(event) {
@@ -64831,8 +64876,7 @@ var TaskRow = React.createClass({
         this.props.setTask(this.props.task);
     },
 
-    deleteTask: function deleteTask(task, e) {
-        e.preventDefault();
+    deleteTask: function deleteTask(task) {
         TaskActions.deleteTask({ id: task });
     },
 
@@ -64846,13 +64890,13 @@ var TaskRow = React.createClass({
                 React.createElement(
                     'div',
                     null,
-                    React.createElement(Checkbox, null)
+                    React.createElement(Checkbox, { defaultChecked: this.state.done, onClick: this.setDone, labelStyle: { 'backgroundColor': '#4F628E' } })
                 )
             ),
             React.createElement(
                 TableRowColumn,
                 null,
-                React.createElement(DateComponent, { date: this.props.task.deadline, taskName: this.props.task.name, taskId: this.props.id, submitDate: this.editTrigger })
+                React.createElement(DateComponent, { date: this.props.task.deadline, dateChanged: this.taskChanged })
             ),
             React.createElement(
                 TableRowColumn,
@@ -64969,10 +65013,6 @@ var ListStore = Object.assign({}, EventEmmit.prototype, {
 
     getAllLists: function getAllLists() {
         return _lists;
-    },
-
-    getListById: function getListById(id) {
-        return _.find(_lists, { id: id });
     }
 });
 
@@ -65026,10 +65066,6 @@ var TaskStore = Object.assign({}, EventEmmit.prototype, {
 
     getAllTasks: function getAllTasks() {
         return _tasks;
-    },
-
-    getTaskById: function getTaskById(id) {
-        return _.find(_tasks, { id: id });
     }
 });
 

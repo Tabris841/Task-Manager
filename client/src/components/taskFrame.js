@@ -6,9 +6,13 @@ var TaskRow = require('./taskRow');
 var TaskActions =require('../actions/taskActions');
 import mui from 'material-ui';
 
-var {Table, TableBody, TableHeader, TableRow, TableHeaderColumn} = mui;
+var {Table, TableBody, TableHeader, TableRow} = mui;
 
 var TaskFrame = React.createClass({
+    propTypes: {
+        list: React.PropTypes.number.isRequired,
+        task: React.PropTypes.array.isRequired
+    },
     getInitialState: function () {
         return {
             value: "",
@@ -28,14 +32,11 @@ var TaskFrame = React.createClass({
         });
     },
 
-    editTask: function (task, e) {
-        e.preventDefault();
-        var taskName = task.value;
-        var taskId = task.id;
-        if (!taskName) {
+    editTask: function (data) {
+        if (!data.value) {
             return;
         }
-        TaskActions.editTask({name: taskName, id: taskId});
+        TaskActions.editTask({name: data.value, id: data.id, deadline: data.deadline, done: data.done});
         this.setState({showModal: false});
     },
 
@@ -62,7 +63,7 @@ var TaskFrame = React.createClass({
                     {this.props.task.filter(function (obj) {
                         return obj.ListId === listId
                     }).map(function (task) {
-                        return <TaskRow task={task} key={task.id} setTask={that.setTask}/>;
+                        return <TaskRow task={task} key={task.id} setTask={that.setTask} editTask={that.editTask}/>;
                     }, this)}
                     </TableBody>
                 </Table>

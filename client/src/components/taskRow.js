@@ -11,7 +11,34 @@ var {Colors} = Styles;
 var TaskRow = React.createClass({
     propTypes: {
         task: React.PropTypes.object.isRequired,
-        setTask: React.PropTypes.func.isRequired
+        setTask: React.PropTypes.func.isRequired,
+        editTask: React.PropTypes.func.isRequired
+    },
+
+    getInitialState: function () {
+        return {
+            date: '',
+            done: this.props.task.done
+        }
+    },
+
+    taskChanged: function (date, done) {
+        if(done == undefined) {
+            done = this.state.done
+        }
+
+        var data = {
+            value: this.props.task.name,
+            id: this.props.task.id,
+            deadline: date,
+            done: done
+        };
+        this.props.editTask(data);
+    },
+
+    setDone: function () {
+        var done = (this.state.done) ? false:true;
+        this.taskChanged(this.props.task.deadline, done)
     },
 
     editTrigger: function (event) {
@@ -19,8 +46,7 @@ var TaskRow = React.createClass({
         this.props.setTask(this.props.task);
     },
 
-    deleteTask: function (task, e) {
-        e.preventDefault();
+    deleteTask: function (task) {
         TaskActions.deleteTask({id: task});
     },
 
@@ -28,9 +54,11 @@ var TaskRow = React.createClass({
         return (
             <TableRow>
                 <TableRowColumn id="firstColumn">
-                    <div><Checkbox/></div>
+                    <div><Checkbox defaultChecked={this.state.done} onClick={this.setDone} labelStyle={{'backgroundColor': '#4F628E'}}/></div>
                 </TableRowColumn>
-                <TableRowColumn><DateComponent date={this.props.task.deadline} taskName={this.props.task.name} taskId={this.props.id} submitDate={this.editTrigger}/></TableRowColumn>
+                <TableRowColumn>
+                    <DateComponent date={this.props.task.deadline} dateChanged={this.taskChanged}/>
+                </TableRowColumn>
                 <TableRowColumn>{this.props.task.name}</TableRowColumn>
                 <TableRowColumn id="forthColumn">
                     <div>

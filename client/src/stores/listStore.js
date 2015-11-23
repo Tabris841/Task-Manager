@@ -23,10 +23,6 @@ var ListStore = Object.assign({}, EventEmmit.prototype, {
 
     getAllLists: function () {
         return _lists;
-    },
-
-    getListById: function (id) {
-        return _.find(_lists, {id: id});
     }
 });
 

@@ -23,10 +23,6 @@ var TaskStore = Object.assign({}, EventEmmit.prototype, {
 
     getAllTasks: function () {
         return _tasks;
-    },
-
-    getTaskById: function (id) {
-        return _.find(_tasks, {id: id});
     }
 });
 

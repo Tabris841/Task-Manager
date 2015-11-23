@@ -23,8 +23,8 @@ router.post('/tasks', function(req, res) {
 router.put('/tasks', function(req, res) {
 	Task.update({
 		name: req.body.name,
-		deadline: req.body.deadline
-		//done: req.body.done,
+		deadline: req.body.deadline,
+		done: req.body.done
 		//ListId: req.body.ListId
 	}, {
 		where: {

@@ -29,6 +29,8 @@
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
       display: inline-block; }
+    #app #taskTable #taskNav #addTaskBtn {
+      background-color: #4CAF50 !important; }
   #app #taskTable table thead {
     display: none; }
   #app #taskTable table tr:hover {
@@ -42,14 +44,14 @@
     white-space: normal;
     border-right: 6px double #F4E8DB;
     vertical-align: inherit;
-    width: 8%; }
+    width: 60px; }
     #app #taskTable table #firstColumn div {
       margin: auto;
       width: 50%; }
   #app #taskTable table td:nth-child(2) {
     white-space: normal;
     border-right: 1px solid #ddd;
-    width: 20%; }
+    width: 120px; }
     #app #taskTable table td:nth-child(2) #datePicker:hover {
       cursor: pointer; }
   #app #taskTable table td:nth-child(3) {
@@ -57,21 +59,22 @@
     border-right: 1px solid #ddd;
     word-wrap: break-word; }
   #app #taskTable table #forthColumn {
-    width: 15%;
+    width: 120px;
     padding-left: 0 !important;
     padding-right: 0 !important;
     color: #979798; }
     #app #taskTable table #forthColumn div {
       margin: auto;
-      width: 4vw; }
+      width: 80px; }
       #app #taskTable table #forthColumn div .editIcon {
-        margin-right: 10px; }
+        margin-right: 15px; }
       #app #taskTable table #forthColumn div .material-icons:hover {
         cursor: pointer; }
 
 #app #toDoBtn {
   margin: auto;
-  width: 14vw; }
+  width: 140px;
+  background-color: #7887AB !important; }
 
 #app .grey {
   color: #787777; }
