@@ -7,9 +7,21 @@ var ListActions = require('../actions/listActions');
 var ListStore = require('../stores/listStore');
 var TaskStore = require('../stores/taskStore');
 import mui from 'material-ui';
-var {RaisedButton} = mui;
+var {RaisedButton, Styles} = mui;
+var ThemeManager = Styles.ThemeManager;
+var CustomTheme = require('../theme/customTheme');
 
 var MainPage = React.createClass({
+    childContextTypes : {
+        muiTheme: React.PropTypes.object
+    },
+
+    getChildContext: function() {
+        return {
+            muiTheme: ThemeManager.getMuiTheme(CustomTheme)
+        };
+    },
+
     getInitialState: function () {
         return {
             list: ListStore.getAllLists(),
@@ -44,7 +56,7 @@ var MainPage = React.createClass({
     createList: function (list, e) {
         e.preventDefault();
         var listName = list.value;
-        if (!list) {
+        if (!list.value) {
             return;
         }
         ListActions.createList({name: listName});
@@ -56,7 +68,7 @@ var MainPage = React.createClass({
             <div>
                 <LisFrame list={this.state.list} task={this.state.task}/>
                 <div id="toDoBtn">
-                    <RaisedButton id="toDoBtn" label="Add TODO List"
+                    <RaisedButton id="toDoBtn" label="Add TODO List" secondary={true}
                                   onTouchTap={this.open}/>
                 </div>
                 <Modal showModal={this.state.showModal} close={this.close} value={this.state.value}

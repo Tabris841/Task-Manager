@@ -29,8 +29,6 @@
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
       display: inline-block; }
-    #app #taskTable #taskNav #addTaskBtn {
-      background-color: #4CAF50 !important; }
   #app #taskTable table thead {
     display: none; }
   #app #taskTable table tr:hover {
@@ -73,8 +71,7 @@
 
 #app #toDoBtn {
   margin: auto;
-  width: 140px;
-  background-color: #7887AB !important; }
+  width: 140px; }
 
 #app .grey {
   color: #787777; }

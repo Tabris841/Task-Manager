@@ -7,28 +7,6 @@ router.get('/lists', function (req, res, err) {
     List.findAll().then(function (list) {
         res.json(list);
     });
-
-    //List.findAll().then(function (list) {
-    //    ListItems = list;
-    //}).then(function () {
-    //    Task.findAll().then(function (task) {
-    //        Tasks = task;
-    //        var result = [];
-    //        var result = ListItems.concat(Tasks);
-    //        res.json(result);
-    //
-    //    });
-    //});
-
-    //Sequelize.query("SELECT * FROM 'Tasks' T JOIN 'Lists' L ON T.ListId = L.id", {
-    //        replacements: ['active'],
-    //        type: sequelize.QueryTypes.SELECT
-    //    }
-    //).then(function (result) {
-    //    console.log(result);
-    //
-    //})
-
 });
 
 router.post('/lists', function (req, res) {

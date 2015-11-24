@@ -25,7 +25,6 @@ router.put('/tasks', function(req, res) {
 		name: req.body.name,
 		deadline: req.body.deadline,
 		done: req.body.done
-		//ListId: req.body.ListId
 	}, {
 		where: {
 			id: req.body.id

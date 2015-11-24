@@ -7,8 +7,7 @@ var Modal = require('./modal');
 var TaskActions =require('../actions/taskActions');
 import mui from 'material-ui';
 
-var {AppBar, IconButton, RaisedButton, FontIcon, Styles} = mui;
-var {Colors} = Styles;
+var {AppBar, IconButton, RaisedButton, FontIcon} = mui;
 
 var ListFrame = React.createClass({
     propTypes: {
@@ -65,7 +64,7 @@ var ListFrame = React.createClass({
         var createList = function (list) {
             return (
                 <div id="taskTable" key={list.id}>
-                    <AppBar title={list.name} style={{'backgroundColor': '#4F628E'}}
+                    <AppBar title={list.name}
                             iconElementLeft={
                                 <IconButton iconClassName="material-icons" tooltipPosition="bottom-center"
                                                 tooltip="List"><span className="white">date_range</span></IconButton>}
@@ -75,13 +74,13 @@ var ListFrame = React.createClass({
                                                 onClick={this.open.bind(this, list.name, list.id)}
                                                 tooltip="Edit"><span className="white">edit</span></IconButton>
                                     <IconButton iconClassName="material-icons" tooltipPosition="bottom-center"
-                                                onClick={this.deleteList.bind(this, [list.name, list.id])}
+                                                onClick={this.deleteList.bind(this, list.id)}
                                                 tooltip="Delete"><span className="white">delete</span></IconButton>
                                 </div>}/>
                     <form id="taskNav" onSubmit={this.createTask} name={list.id}>
                         <FontIcon className="material-icons"><span className="plusIcon">loupe</span></FontIcon>
                         <input className="inputForm form-control"type="text" name="text" placeholder="Start typing here to create a task..."/>
-                        <RaisedButton id="addTaskBtn" type="submit" label="Add task"/>
+                        <RaisedButton id="addTaskBtn" type="submit" label="Add task" primary={true}/>
                     </form>
                     <div>
                         <TaskFrame task={this.props.task} list={list.id}/>

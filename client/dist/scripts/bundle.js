@@ -64443,8 +64443,6 @@ var AppBar = _materialUi2.default.AppBar;
 var IconButton = _materialUi2.default.IconButton;
 var RaisedButton = _materialUi2.default.RaisedButton;
 var FontIcon = _materialUi2.default.FontIcon;
-var Styles = _materialUi2.default.Styles;
-var Colors = Styles.Colors;
 
 var ListFrame = React.createClass({
     displayName: 'ListFrame',
@@ -64503,7 +64501,7 @@ var ListFrame = React.createClass({
             return React.createElement(
                 'div',
                 { id: 'taskTable', key: list.id },
-                React.createElement(AppBar, { title: list.name, style: { 'backgroundColor': '#4F628E' },
+                React.createElement(AppBar, { title: list.name,
                     iconElementLeft: React.createElement(
                         IconButton,
                         { iconClassName: 'material-icons', tooltipPosition: 'bottom-center',
@@ -64531,7 +64529,7 @@ var ListFrame = React.createClass({
                         React.createElement(
                             IconButton,
                             { iconClassName: 'material-icons', tooltipPosition: 'bottom-center',
-                                onClick: this.deleteList.bind(this, [list.name, list.id]),
+                                onClick: this.deleteList.bind(this, list.id),
                                 tooltip: 'Delete' },
                             React.createElement(
                                 'span',
@@ -64553,7 +64551,7 @@ var ListFrame = React.createClass({
                         )
                     ),
                     React.createElement('input', { className: 'inputForm form-control', type: 'text', name: 'text', placeholder: 'Start typing here to create a task...' }),
-                    React.createElement(RaisedButton, { id: 'addTaskBtn', type: 'submit', label: 'Add task' })
+                    React.createElement(RaisedButton, { id: 'addTaskBtn', type: 'submit', label: 'Add task', primary: true })
                 ),
                 React.createElement(
                     'div',
@@ -64591,9 +64589,23 @@ var ListActions = require('../actions/listActions');
 var ListStore = require('../stores/listStore');
 var TaskStore = require('../stores/taskStore');
 var RaisedButton = _materialUi2.default.RaisedButton;
+var Styles = _materialUi2.default.Styles;
+
+var ThemeManager = Styles.ThemeManager;
+var CustomTheme = require('../theme/customTheme');
 
 var MainPage = React.createClass({
     displayName: 'MainPage',
+
+    childContextTypes: {
+        muiTheme: React.PropTypes.object
+    },
+
+    getChildContext: function getChildContext() {
+        return {
+            muiTheme: ThemeManager.getMuiTheme(CustomTheme)
+        };
+    },
 
     getInitialState: function getInitialState() {
         return {
@@ -64628,7 +64640,7 @@ var MainPage = React.createClass({
     createList: function createList(list, e) {
         e.preventDefault();
         var listName = list.value;
-        if (!list) {
+        if (!list.value) {
             return;
         }
         ListActions.createList({ name: listName });
@@ -64643,7 +64655,7 @@ var MainPage = React.createClass({
             React.createElement(
                 'div',
                 { id: 'toDoBtn' },
-                React.createElement(RaisedButton, { id: 'toDoBtn', label: 'Add TODO List',
+                React.createElement(RaisedButton, { id: 'toDoBtn', label: 'Add TODO List', secondary: true,
                     onTouchTap: this.open })
             ),
             React.createElement(Modal, { showModal: this.state.showModal, close: this.close, value: this.state.value,
@@ -64655,7 +64667,7 @@ var MainPage = React.createClass({
 module.exports = MainPage;
 
 
-},{"../actions/listActions":341,"../stores/listStore":354,"../stores/taskStore":355,"./listFrame":346,"./modal":348,"material-ui":46,"react":339}],348:[function(require,module,exports){
+},{"../actions/listActions":341,"../stores/listStore":354,"../stores/taskStore":355,"../theme/customTheme":356,"./listFrame":346,"./modal":348,"material-ui":46,"react":339}],348:[function(require,module,exports){
 "use strict";
 
 var _materialUi = require('material-ui');
@@ -64681,16 +64693,23 @@ var Modals = React.createClass({
 
     getInitialState: function getInitialState() {
         return {
-            value: ''
+            value: '',
+            errorText: ''
         };
     },
 
     componentWillReceiveProps: function componentWillReceiveProps(newProps) {
-        this.setState({ value: newProps.value });
+        this.setState({
+            value: newProps.value,
+            errorText: newProps.value ? '' : 'This field is required.'
+        });
     },
 
     setValueState: function setValueState(e) {
-        this.setState({ value: e.target.value });
+        this.setState({
+            value: e.target.value,
+            errorText: e.target.value ? '' : 'This field is required.'
+        });
     },
 
     render: function render() {
@@ -64715,7 +64734,9 @@ var Modals = React.createClass({
                 actionFocus: 'submit',
                 open: this.props.showModal,
                 onRequestClose: this.props.close },
-            React.createElement(TextField, { type: 'textarea', hintText: 'Enter text', value: this.state.value, onChange: this.setValueState,
+            React.createElement(TextField, { type: 'textarea',
+                hintText: 'Enter text', value: this.state.value, onChange: this.setValueState,
+                errorText: this.state.errorText,
                 style: { width: '100%' }, multiLine: true })
         );
     }
@@ -65093,4 +65114,30 @@ Dispatcher.register(function (action) {
 module.exports = TaskStore;
 
 
-},{"../constants/actionTypes":351,"../dispatcher/appDispatcher":352,"events":1,"lodash":7}]},{},[353]);
+},{"../constants/actionTypes":351,"../dispatcher/appDispatcher":352,"events":1,"lodash":7}],356:[function(require,module,exports){
+'use strict';
+
+var Colors = require('material-ui/lib/styles/colors');
+var ColorManipulator = require('material-ui/lib/utils/color-manipulator');
+var Spacing = require('material-ui/lib/styles/spacing');
+
+module.exports = {
+    spacing: Spacing,
+    fontFamily: 'Roboto, sans-serif',
+    palette: {
+        primary1Color: Colors.purple900,
+        primary2Color: Colors.purple900,
+        primary3Color: Colors.lightBlack,
+        accent1Color: Colors.yellow900,
+        accent2Color: Colors.grey100,
+        accent3Color: Colors.grey500,
+        textColor: Colors.darkBlack,
+        alternateTextColor: Colors.white,
+        canvasColor: Colors.white,
+        borderColor: Colors.grey300,
+        disabledColor: ColorManipulator.fade(Colors.darkBlack, 0.3)
+    }
+};
+
+
+},{"material-ui/lib/styles/colors":83,"material-ui/lib/styles/spacing":87,"material-ui/lib/utils/color-manipulator":137}]},{},[353]);

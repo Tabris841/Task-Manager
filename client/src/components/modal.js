@@ -14,16 +14,23 @@ var Modals = React.createClass ({
 
     getInitialState: function () {
         return {
-            value: ''
+            value: '',
+            errorText: ''
         }
     },
 
     componentWillReceiveProps: function (newProps) {
-        this.setState({value: newProps.value})
+        this.setState({
+            value: newProps.value,
+            errorText: newProps.value ? '' : 'This field is required.'
+        })
     },
-
+    
     setValueState: function (e) {
-        this.setState({value: e.target.value})
+        this.setState({
+            value: e.target.value,
+            errorText: e.target.value ? '' : 'This field is required.'
+        })
     },
 
     render: function () {
@@ -50,7 +57,9 @@ var Modals = React.createClass ({
                 actionFocus="submit"
                 open={this.props.showModal}
                 onRequestClose={this.props.close}>
-                <TextField type="textarea" hintText="Enter text" value={this.state.value} onChange={this.setValueState}
+                <TextField type="textarea"
+                           hintText="Enter text" value={this.state.value} onChange={this.setValueState}
+                           errorText={this.state.errorText}
                            style={{width: '100%'}} multiLine={true}/>
             </Dialog>
 
