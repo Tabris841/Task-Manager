@@ -21,9 +21,14 @@ var DateComponent = React.createClass({
         this.props.dateChanged(date);
     },
 
+    formatDate(date){
+        return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+    },
+
     render: function () {
         return <DatePicker
             id="datePicker"
+            formatDate={this.formatDate}
             minDate={this.state.minDate}
             value={this.state.controlledDate}
             onChange={this._handleChange}

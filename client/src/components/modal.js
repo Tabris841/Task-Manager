@@ -25,7 +25,7 @@ var Modals = React.createClass ({
             errorText: newProps.value ? '' : 'This field is required.'
         })
     },
-    
+
     setValueState: function (e) {
         this.setState({
             value: e.target.value,
