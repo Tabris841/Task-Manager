@@ -17,7 +17,7 @@ var InitializeActions = {
                     }
                 });
             })
-        })
+        });
     }
 };
 
